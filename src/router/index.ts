@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { documentationRoute } from '@/documentation/router';
 import { productsRoute } from '@/products/router';
 
+import { ROUTE_NAMES as GENERIC_ROUTES } from '@/router/constants/genericRoutes';
 import { ROUTE_NAMES as PRODUCTS_ROUTES } from '@/products/router/constants/route-names'
 
 const router = createRouter({
@@ -10,7 +11,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: GENERIC_ROUTES.HOME,
       redirect: { name: PRODUCTS_ROUTES.PRODUCTS_LIST},
     },
     {

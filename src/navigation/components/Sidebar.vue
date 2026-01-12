@@ -20,6 +20,7 @@ import {
 
 import { SECTION_LINKS } from "../constants/sectionLinks";
 import { APP_CONFIG_SETTINGS } from "@/shared/constants/appConfigSettings";
+import { ROUTE_NAMES as GENERIC_ROUTES } from "@/router/constants/genericRoutes";
 
 const links = SECTION_LINKS;
 
@@ -32,10 +33,10 @@ const links = SECTION_LINKS;
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton as-child class="data-[slot=sidebar-menu-button]:!p-1.5">
-            <a href="#">
+            <RouterLink :to="{ name: GENERIC_ROUTES.HOME }">
               <IconBuildingStore class="!size-5" />
               <span class="text-base font-semibold">{{ APP_CONFIG_SETTINGS.APP_TITLE }}</span>
-            </a>
+            </RouterLink>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
