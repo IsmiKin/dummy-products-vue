@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import type { Component } from "vue"
+import { RouterLink } from "vue-router"
+
+import type { ItemSection } from "@/navigation/constants/sectionLinks"
 
 import {
   SidebarGroup,
@@ -9,16 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-interface Item {
-  name: string
-  url: string
-  icon?: Component
-}
-
-defineProps<{
-  title: string,
-  items: Item[]
-}>()
+defineProps<ItemSection>()
 
 </script>
 
@@ -28,10 +21,10 @@ defineProps<{
     <SidebarMenu>
       <SidebarMenuItem v-for="item in items" :key="item.name">
         <SidebarMenuButton as-child>
-          <a :href="item.url">
+          <RouterLink :to="item.routeName">
             <component :is="item.icon" />
             <span>{{ item.name }}</span>
-          </a>
+          </RouterLink>
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>

@@ -1,3 +1,3 @@
 export const ROUTE_NAMES = {
-  LIST: 'list',
+  PRODUCTS_LIST: 'products-list',
 }

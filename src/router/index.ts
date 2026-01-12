@@ -3,17 +3,19 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { documentationRoute } from '@/documentation/router';
 import { productsRoute } from '@/products/router';
 
+import { ROUTE_NAMES as PRODUCTS_ROUTES } from '@/products/router/constants/route-names'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       name: 'home',
-      redirect: 'list-products',
+      redirect: { name: PRODUCTS_ROUTES.PRODUCTS_LIST},
     },
     {
       ...documentationRoute,
-      path: '/documentation',
+      path:'/documentation',
     },
     {
       ...productsRoute,
@@ -21,9 +23,9 @@ const router = createRouter({
     },
     {
       path: '/:pathMatch(.*)*',
-      redirect: () => {
-        console.log('Route does not exists');
-        return { name: 'home' };
+      redirect: (to) => {
+        console.log('Route does not exists', to);
+        return { name: PRODUCTS_ROUTES.PRODUCTS_LIST };
       },
     }
   ],

@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import {
-  IconDatabase,
   IconBuildingStore,
-  IconTools,
-  IconInfoCircle,
   IconWorld,
   IconPackage,
   IconBrandGithub,
@@ -21,34 +18,10 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-const links = {
-  products: {
-    title: "Products",
-    items: [
-      {
-        name: "Products  Library",
-        url: "#",
-        icon: IconDatabase,
-      },
-    ],
-  },
-  about: {
-    title: "Documentation",
-    items: [
-      {
-        name: "About",
-        url: "#",
-        icon: IconInfoCircle,
-      },
-      {
-        name: "Tech stack",
-        url: "#",
-        icon: IconTools,
-      },
-    ],
-  },
+import { SECTION_LINKS } from "../constants/sectionLinks";
 
-}
+const links = SECTION_LINKS;
+
 </script>
 
 <template>
@@ -79,12 +52,6 @@ const links = {
             </a>
           </SidebarMenuButton>
         </SidebarMenuItem>
-        <SidebarMenuButton as-child class="data-[slot=sidebar-menu-button]:!p-1.5">
-          <a href="#">
-            <IconPackage class="!size-5" />
-            <span class="text-base italic">Version 0.2.0</span>
-          </a>
-        </SidebarMenuButton>
       </SidebarMenuItem>
       <SidebarMenuItem>
         <SidebarMenuButton as-child class="data-[slot=sidebar-menu-button]:!p-1.5">
@@ -94,6 +61,12 @@ const links = {
           </a>
         </SidebarMenuButton>
       </SidebarMenuItem>
+      <SidebarMenuButton as-child class="data-[slot=sidebar-menu-button]:!p-1.5">
+        <a href="#">
+          <IconPackage class="!size-5" />
+          <span class="text-base italic">Version 0.2.0</span>
+        </a>
+      </SidebarMenuButton>
     </SidebarFooter>
   </Sidebar>
 </template>

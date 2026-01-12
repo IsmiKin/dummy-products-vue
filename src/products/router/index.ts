@@ -6,11 +6,10 @@ const ROUTE_NAME = 'products';
 
 export const productsRoute: RouteRecordRaw = {
   path: `/${ ROUTE_NAME }`,
-  redirect: `/${  ROUTE_NAME }/${ ROUTE_NAMES.LIST }`,
   children: [
     {
-      path: `/${ ROUTE_NAME }/${ ROUTE_NAMES.LIST }`,
-      name: ROUTE_NAMES.LIST,
+      path: `/${ ROUTE_NAME }/${ ROUTE_NAMES.PRODUCTS_LIST }`,
+      name: ROUTE_NAMES.PRODUCTS_LIST,
       component: () => import('@/products/views/ListProducts.vue'),
     },
   ]
