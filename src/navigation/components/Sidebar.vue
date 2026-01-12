@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import { SECTION_LINKS } from "../constants/sectionLinks";
+import { APP_CONFIG_SETTINGS } from "@/shared/constants/appConfigSettings";
 
 const links = SECTION_LINKS;
 
@@ -33,7 +34,7 @@ const links = SECTION_LINKS;
           <SidebarMenuButton as-child class="data-[slot=sidebar-menu-button]:!p-1.5">
             <a href="#">
               <IconBuildingStore class="!size-5" />
-              <span class="text-base font-semibold">Dummy Products</span>
+              <span class="text-base font-semibold">{{ APP_CONFIG_SETTINGS.APP_TITLE }}</span>
             </a>
           </SidebarMenuButton>
         </SidebarMenuItem>
@@ -55,16 +56,16 @@ const links = SECTION_LINKS;
       </SidebarMenuItem>
       <SidebarMenuItem>
         <SidebarMenuButton as-child class="data-[slot=sidebar-menu-button]:!p-1.5">
-          <a href="#">
+          <a :href="APP_CONFIG_SETTINGS.AUTHOR_URL_LINK" target="_blank">
             <IconWorld class="!size-5" />
-            <a href="https://ismikin.dev" target="_blank"> ismikin.dev</a>
+            <p>{{ APP_CONFIG_SETTINGS.AUTHOR_URL_URI }}</p>
           </a>
         </SidebarMenuButton>
       </SidebarMenuItem>
       <SidebarMenuButton as-child class="data-[slot=sidebar-menu-button]:!p-1.5">
         <a href="#">
           <IconPackage class="!size-5" />
-          <span class="text-base italic">Version 0.2.0</span>
+          <span class="text-base italic">Version {{ APP_CONFIG_SETTINGS.VERSION }}</span>
         </a>
       </SidebarMenuButton>
     </SidebarFooter>
