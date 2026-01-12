@@ -4,6 +4,8 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 
 import { APP_CONFIG_SETTINGS } from "@/shared/constants/appConfigSettings";
 
+import ThemeModeToggle from "@/components/ThemeModeToggle/ThemeModeToggle.vue"
+
 </script>
 
 <template>
@@ -15,6 +17,10 @@ import { APP_CONFIG_SETTINGS } from "@/shared/constants/appConfigSettings";
       <h1 class="text-base font-medium">
         {{ APP_CONFIG_SETTINGS.APP_TITLE }}
       </h1>
+      <div class="ml-auto flex items-center gap-2">
+        <span class="text-base italic">Color Mode</span>
+        <ThemeModeToggle />
+      </div>
     </div>
   </header>
 </template>

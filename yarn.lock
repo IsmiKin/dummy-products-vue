@@ -2158,7 +2158,7 @@
 
 "@vueuse/core@^14.1.0":
   version "14.1.0"
-  resolved "https://registry.npmjs.org/@vueuse/core/-/core-14.1.0.tgz"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-14.1.0.tgz#274e98e591a505333b7dfb2bcaf7b4530a10b9c9"
   integrity sha512-rgBinKs07hAYyPF834mDTigH7BtPqvZ3Pryuzt1SD/lg5wEcWqvwzXXYGEDb2/cP0Sj5zSvHl3WkmMELr5kfWw==
   dependencies:
     "@types/web-bluetooth" "^0.0.21"
