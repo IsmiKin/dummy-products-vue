@@ -1091,7 +1091,7 @@
 
 "@tabler/icons-vue@^3.36.1":
   version "3.36.1"
-  resolved "https://registry.yarnpkg.com/@tabler/icons-vue/-/icons-vue-3.36.1.tgz#3b062c98bcd9a11034c0979a54115603f86cf8f1"
+  resolved "https://registry.npmjs.org/@tabler/icons-vue/-/icons-vue-3.36.1.tgz"
   integrity sha512-ssIu0KSmGFKvvoC5PJhSYAj/J2kTEbIVIix0528zdRKfN6yohUlQt014tGnDDdJ/MyyG/xRXsKD1U6dyQY8rrg==
   dependencies:
     "@tabler/icons" ""
@@ -1242,7 +1242,7 @@
 
 "@tanstack/vue-table@^8.21.3":
   version "8.21.3"
-  resolved "https://registry.npmjs.org/@tanstack/vue-table/-/vue-table-8.21.3.tgz"
+  resolved "https://registry.yarnpkg.com/@tanstack/vue-table/-/vue-table-8.21.3.tgz#09498ba5bbe5eca5aa665f9b76876da22715bb28"
   integrity sha512-rusRyd77c5tDPloPskctMyPLFEQUeBzxdQ+2Eow4F7gDPlPOB1UnnhzfpdvqZ8ZyX2rRNGmqNnQWm87OI2OQPw==
   dependencies:
     "@tanstack/table-core" "8.21.3"
@@ -2158,7 +2158,7 @@
 
 "@vueuse/core@^14.1.0":
   version "14.1.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-14.1.0.tgz#274e98e591a505333b7dfb2bcaf7b4530a10b9c9"
+  resolved "https://registry.npmjs.org/@vueuse/core/-/core-14.1.0.tgz"
   integrity sha512-rgBinKs07hAYyPF834mDTigH7BtPqvZ3Pryuzt1SD/lg5wEcWqvwzXXYGEDb2/cP0Sj5zSvHl3WkmMELr5kfWw==
   dependencies:
     "@types/web-bluetooth" "^0.0.21"
