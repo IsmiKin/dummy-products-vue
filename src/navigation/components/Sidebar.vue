@@ -9,7 +9,7 @@ import {
   IconBrandGithub,
 } from "@tabler/icons-vue"
 
-import NavSection from "@/components/NavSection.vue"
+import NavSection from "./NavSection.vue"
 
 import {
   Sidebar,
