@@ -3,4 +3,5 @@ export const APP_CONFIG_SETTINGS = {
   AUTHOR_URL_LINK: import.meta.env.VITE_AUTHOR_URL_LINK,
   AUTHOR_URL_URI: import.meta.env.VITE_AUTHOR_URL_URI,
   VERSION: import.meta.env.VITE_VERSION,
+  PRODUCTS_API_BASE_URL: import.meta.env.VITE_PRODUCTS_API_BASE_URL,
 }
