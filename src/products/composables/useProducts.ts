@@ -32,7 +32,7 @@ export const useProducts = () => {
     total: computed(() => response.value?.total),
     skip: computed(() => response.value?.skip),
     limit: computed(() => response.value?.limit),
-    products: computed(() => response.value?.products),
+    products: computed(() => response.value?.products ?? []),
   }
 }
 
