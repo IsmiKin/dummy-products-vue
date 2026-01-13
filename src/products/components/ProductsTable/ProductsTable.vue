@@ -33,9 +33,9 @@ console.log(table)
       <Input placeholder="Filter anything...(client name, email, status)" value="" class="max-w-sm" />
       <Select value="" />
     </div>
-    <div class="border rounded-md">
+    <div class="overflow-hidden rounded-lg border">
       <Table>
-        <TableHeader>
+        <TableHeader class="bg-muted sticky top-0 z-10">
           <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
             <TableHead v-for="header in headerGroup.headers" :key="header.id">
               <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
