@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { IconError404 } from '@tabler/icons-vue';
+
 import ProductsTable from '@/products/components/ProductsTable/ProductsTable.vue'
+import ProductsTableSkeleton from '@/products/components/ProductsTable/ProductsTableSkeleton.vue'
 
 import { useProducts } from '@/products/composables/useProducts';
 import { columns } from '@/products/components/ProductsTable/helpers/columns';
-import { IconLoader, IconError404 } from '@tabler/icons-vue';
-
 const { products, isLoading, isError, error } = useProducts();
 
 </script>
@@ -13,11 +14,7 @@ const { products, isLoading, isError, error } = useProducts();
 
     <h1 class="text-2xl font-semibold">Products</h1>
 
-    <div v-if="isLoading" class="self-center">
-      <!-- TODO: Add table skeleton -->
-      <IconLoader class="animate-spin" />
-      Loading...
-    </div>
+    <ProductsTableSkeleton v-if="isLoading" />
 
     <ProductsTable v-if="products.length > 0" :columns="columns" :data="products" />
 
