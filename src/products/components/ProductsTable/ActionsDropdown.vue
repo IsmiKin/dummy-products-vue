@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { IconDots } from '@tabler/icons-vue';
+import { toast } from 'vue-sonner';
 import { Button } from '@/components/ui/button'
+import { IconDots, IconCopy, IconEye, IconEdit, IconTrash } from '@tabler/icons-vue';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
 defineProps<{
@@ -9,8 +10,10 @@ defineProps<{
   }
 }>()
 
+// TODO: Extract to file and add tests
 function copy(id: number) {
-  navigator.clipboard.writeText(id.toString())
+  navigator.clipboard.writeText(id.toString());
+  toast("Product ID copied to clipboard");
 }
 </script>
 
@@ -23,13 +26,21 @@ function copy(id: number) {
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
-      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+      <DropdownMenuLabel><strong>Actions</strong></DropdownMenuLabel>
       <DropdownMenuItem @click="copy(product.id)">
-        Copy product ID
+        <IconCopy /> Copy product ID
       </DropdownMenuItem>
       <DropdownMenuSeparator />
-      <DropdownMenuItem>View product</DropdownMenuItem>
-      <DropdownMenuItem>View product details</DropdownMenuItem>
+      <DropdownMenuItem>
+        <IconEye /> View product details
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <IconEdit /> Edit product
+      </DropdownMenuItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem>
+        <IconTrash /> Delete product
+      </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 </template>

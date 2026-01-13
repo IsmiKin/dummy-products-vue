@@ -29,6 +29,7 @@ console.log(table)
 
 <template>
   <div>
+    <!-- TODO: Move outside ? -->
     <div class="flex items-center justify-between py-4">
       <Input placeholder="Filter anything...(client name, email, status)" value="" class="max-w-sm" />
       <Select value="" />
