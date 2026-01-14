@@ -6,6 +6,7 @@ import ProductsTableSkeleton from '@/products/components/ProductsTable/ProductsT
 
 import { useProducts } from '@/products/composables/useProducts';
 import { columns } from '@/products/components/ProductsTable/helpers/columns';
+
 const { products, isLoading, isError, error } = useProducts();
 
 </script>

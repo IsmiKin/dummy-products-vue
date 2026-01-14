@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TData, TValue">
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { useVueTable, getCoreRowModel, type ColumnDef } from "@tanstack/vue-table";
+import { useVueTable, getCoreRowModel, getPaginationRowModel, type ColumnDef } from "@tanstack/vue-table";
 
 import {
   Table,
@@ -13,6 +13,10 @@ import {
 } from '@/components/ui/table';
 import { FlexRender } from "@tanstack/vue-table";
 
+import { useProducts } from '@/products/composables/useProducts';
+
+import TablePagination from '@/components/TablePagination/TablePagination.vue';
+
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -22,9 +26,17 @@ const table = useVueTable({
   get data() { return props.data },
   get columns() { return props.columns },
   getCoreRowModel: getCoreRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
 })
 
-console.log(table)
+const { goToPage } = useProducts({ autoload: false });
+
+const loadPage = (page: number) => {
+  table.setPageIndex(page);
+  goToPage(page);
+}
+
+
 </script>
 
 <template>
@@ -34,7 +46,7 @@ console.log(table)
       <Input placeholder="Filter anything...(client name, email, status)" value="" class="max-w-sm" />
       <Select value="" />
     </div>
-    <div class="overflow-hidden rounded-lg border">
+    <div class="overflow-hidden rounded-lg border mb-4">
       <Table>
         <TableHeader class="bg-muted sticky top-0 z-10">
           <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
@@ -45,9 +57,8 @@ console.log(table)
           </TableRow>
         </TableHeader>
         <TableBody>
-          <template v-if="table.getRowModel().rows?.length">
-            <TableRow v-for="row in table.getRowModel().rows" :key="row.id"
-              :data-state="row.getIsSelected() ? 'selected' : undefined">
+          <template v-if="table.getCoreRowModel().rows?.length">
+            <TableRow v-for="row in table.getCoreRowModel().rows" :key="row.id">
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                 <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
               </TableCell>
@@ -63,5 +74,6 @@ console.log(table)
         </TableBody>
       </Table>
     </div>
+    <TablePagination :table="table" @goToPage="loadPage" />
   </div>
 </template>

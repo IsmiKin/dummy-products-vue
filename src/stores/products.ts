@@ -5,26 +5,29 @@ import type { Product } from '@/products/interfaces/product';
 export const useProductsStore = defineStore('products', () => {
 
     const currentPage = ref<number>(1);
-    const totalPages  = ref<number>(5);
+    const total = ref<number>(5);
     const products = ref<Product[]>([]);
 
     return {
         // State
         currentPage,
-        totalPages,
+        total,
         products,
 
         // Getters
 
         // Actions
-        setProducts( newProducts: Product[] ) {
+        setProducts(newProducts: Product[]) {
             products.value = newProducts;
         },
-        setPage( page: number ) {
-            if ( currentPage.value === page ) return;
-            if ( page <= 0 ) return;
+        setPage(page: number) {
+            if (currentPage.value === page) return;
+            if (page <= 0) return;
 
             currentPage.value = page;
+        },
+        setTotal(newTotal: number) {
+            total.value = newTotal;
         }
 
     }
