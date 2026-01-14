@@ -24,8 +24,7 @@ const router = createRouter({
     },
     {
       path: '/:pathMatch(.*)*',
-      redirect: (to) => {
-        console.log('Route does not exists', to);
+      redirect: () => {
         return { name: PRODUCTS_ROUTES.PRODUCTS_LIST };
       },
     }

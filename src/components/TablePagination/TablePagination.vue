@@ -17,7 +17,10 @@ interface TablePagination {
 }
 const props = defineProps<TablePagination>()
 
-const firstItemVisibleCardinal = computed(() => ((props.table.getState().pagination.pageIndex) * productsDefaultLimit) + 1);
+const firstItemVisibleCardinal = computed(() => {
+  const totalCount = props.table.getRowCount();
+  return totalCount === 0 ? 0 : (props.table.getState().pagination.pageIndex) * productsDefaultLimit + 1;
+})
 const lastItemVisibleCardinal = computed(() => {
   const totalCount = props.table.getRowCount();
   const lastItem = (props.table.getState().pagination.pageIndex + 1) * productsDefaultLimit;
@@ -29,8 +32,8 @@ const lastItemVisibleCardinal = computed(() => {
 <template>
   <div class="flex items-center justify-between px-2">
     <div class="flex-1 text-sm text-muted-foreground">
-      Showing {{ firstItemVisibleCardinal }} of
-      {{ lastItemVisibleCardinal }} products(s).
+      Showing {{ firstItemVisibleCardinal }} -
+      {{ lastItemVisibleCardinal }} of {{ props.table.getRowCount() }} products
     </div>
     <div class="flex items-center space-x-6 lg:space-x-8">
 

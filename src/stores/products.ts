@@ -11,12 +11,14 @@ export const useProductsStore = defineStore('products', () => {
     const currentPage = ref<number>(1);
     const total = ref<number>(5);
     const products = ref<Product[]>([]);
+    const searchValue = ref<string>('');
 
     return {
         // State
         currentPage,
         total,
         products,
+        searchValue,
 
         // Getters
         totalPages: computed(() => Math.ceil(total.value / productsDefaultLimit)),
@@ -37,6 +39,9 @@ export const useProductsStore = defineStore('products', () => {
         },
         setTotal(newTotal: number) {
             total.value = newTotal;
+        },
+        setSearchValue(newSearchValue: string) {
+            searchValue.value = newSearchValue;
         }
 
     }

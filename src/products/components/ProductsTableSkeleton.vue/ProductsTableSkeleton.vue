@@ -11,9 +11,6 @@ const rowsCount = 10;
 
 <template>
   <div>
-    <div class="flex items-center justify-between py-4">
-      <Skeleton class="h-8 w-[400px]" />
-    </div>
     <div class="border rounded-lg">
       <Table>
         <TableHeader class="bg-muted sticky top-0 z-10">

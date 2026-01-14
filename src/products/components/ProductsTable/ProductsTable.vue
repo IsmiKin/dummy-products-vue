@@ -1,6 +1,4 @@
 <script setup lang="ts" generic="TData, TValue">
-import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
 import { useVueTable, getCoreRowModel, type ColumnDef } from "@tanstack/vue-table";
 
 import {
@@ -61,10 +59,11 @@ const table = useVueTable({
 <template>
   <div>
     <!-- TODO: Move outside ? -->
-    <div class="flex items-center justify-between py-4">
-      <Input placeholder="Filter anything...(client name, email, status)" value="" class="max-w-sm" />
+    <!-- <div class="flex items-center justify-between py-4">
+      <Input v-model="searchValue" placeholder="Filter anything...(product name, description, price, etc.)"
+        class="max-w-sm" />
       <Select value="" />
-    </div>
+    </div> -->
     <div class="overflow-hidden rounded-lg border mb-4">
       <Table>
         <TableHeader class="bg-muted sticky top-0 z-10">

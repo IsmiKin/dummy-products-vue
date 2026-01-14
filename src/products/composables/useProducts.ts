@@ -16,15 +16,15 @@ interface Options {
 export const useProducts = ( options?: Options ) => {
 
   const store = useProductsStore();
-  const { currentPage, currentProductPosition, products, total, totalPages } = storeToRefs( store );
+  const { currentPage, currentProductPosition, products, total, totalPages, searchValue } = storeToRefs(store);
 
   const { autoload = true } = options || {};
 
   const queryClient = useQueryClient();
 
   const { isLoading, data, isError, error } = useQuery({
-    queryKey: ['products', { page: currentPage }],
-    queryFn: () => getProducts(currentProductPosition.value),
+    queryKey: ['products', { page: currentPage, search: searchValue }],
+    queryFn: () => getProducts(currentProductPosition.value, searchValue.value),
     staleTime: 60 * 1000,
     enabled: autoload,
     retry: 0,
@@ -40,12 +40,14 @@ export const useProducts = ( options?: Options ) => {
   }
 
   const prefetchPage = (page: number) => queryClient.prefetchQuery({
-    queryKey: ['products', { page }],
-    queryFn: () => getProducts(page * productsDefaultLimit),
+    queryKey: ['products', { page, search: searchValue }],
+    queryFn: () => getProducts(page * productsDefaultLimit, searchValue.value),
     staleTime: 1000 * 15,
   });
 
-
+  const resetSearch = () => {
+    store.setSearchValue('');
+  }
 
   watch(data, products => {
     if(products){
@@ -54,7 +56,6 @@ export const useProducts = ( options?: Options ) => {
     }
 
     if(currentPage.value < totalPages.value){
-      console.log('prefetching page', currentPage.value + 1);
       prefetchPage(currentPage.value + 1);
     }
   }, { immediate: true });
@@ -69,9 +70,12 @@ export const useProducts = ( options?: Options ) => {
     products,
     total,
     currentPage,
+    searchValue,
 
     // Methods
     goToPage,
+    resetSearch,
+    setSearchValue: store.setSearchValue,
 
     // Computed
   }
