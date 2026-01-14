@@ -57,8 +57,8 @@ const loadPage = (page: number) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <template v-if="table.getCoreRowModel().rows?.length">
-            <TableRow v-for="row in table.getCoreRowModel().rows" :key="row.id">
+          <template v-if="table.getRowModel().rows?.length">
+            <TableRow v-for="row in table.getRowModel().rows" :key="row.id">
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
                 <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
               </TableCell>
