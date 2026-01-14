@@ -9,10 +9,15 @@ const entityApiUrl = 'products';
 const productsDefaultLimit = APP_CONFIG_SETTINGS.PRODUCTS_LIST_DEFAULT_LIMIT;
 
 export const getProducts = async(position: number = 1): Promise<ProductsListResponse> => {
-    // TODO: Remove delay after testing
-    const hasDelay = true ? '&delay=1000' : '';
 
-    const { data } = await productsApi.get<ProductsListResponse>(`/${entityApiUrl}?skip=${position}&limit=${productsDefaultLimit}${hasDelay}`);
+    const params = new URLSearchParams();
+    params.set('skip', position.toString());
+    params.set('limit', productsDefaultLimit.toString());
+
+    // TODO: Remove delay after testing
+    params.set('delay', '1000');
+
+    const { data } = await productsApi.get<ProductsListResponse>(`/${entityApiUrl}`, { params });
     return data;
 }
 
