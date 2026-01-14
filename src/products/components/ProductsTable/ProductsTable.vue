@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TData, TValue">
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { useVueTable, getCoreRowModel, getPaginationRowModel, type ColumnDef } from "@tanstack/vue-table";
+import { useVueTable, getCoreRowModel, type ColumnDef } from "@tanstack/vue-table";
 
 import {
   Table,
@@ -17,26 +17,45 @@ import { useProducts } from '@/products/composables/useProducts';
 
 import TablePagination from '@/components/TablePagination/TablePagination.vue';
 
+import { APP_CONFIG_SETTINGS } from '@/shared/constants/appConfigSettings';
+
+const productsDefaultLimit = APP_CONFIG_SETTINGS.PRODUCTS_LIST_DEFAULT_LIMIT;
+
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }>()
 
+const { goToPage, total, currentPage } = useProducts({ autoload: false });
+
 const table = useVueTable({
   get data() { return props.data },
   get columns() { return props.columns },
   getCoreRowModel: getCoreRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
+  manualPagination: true,
+  get rowCount() { return total.value },
+  state: {
+    get pagination() {
+      return {
+        pageIndex: currentPage.value - 1,
+        pageSize: productsDefaultLimit,
+      }
+    },
+  },
+  onPaginationChange: (updaterOrValue) => {
+    const paginationState = {
+      pageIndex: currentPage.value - 1,
+      pageSize: productsDefaultLimit,
+    }
+    const next = typeof updaterOrValue === 'function'
+      ? updaterOrValue(paginationState)
+      : updaterOrValue
+
+    if (next.pageIndex !== paginationState.pageIndex) {
+      goToPage(next.pageIndex + 1);
+    }
+  },
 })
-
-const { goToPage } = useProducts({ autoload: false });
-
-const loadPage = (page: number) => {
-  table.setPageIndex(page);
-  goToPage(page);
-}
-
-
 </script>
 
 <template>
@@ -74,6 +93,6 @@ const loadPage = (page: number) => {
         </TableBody>
       </Table>
     </div>
-    <TablePagination :table="table" @goToPage="loadPage" />
+    <TablePagination :table="table" />
   </div>
 </template>

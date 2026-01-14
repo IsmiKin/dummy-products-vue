@@ -5,8 +5,9 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 
 import DropdownAction from '@/products/components/ProductsTable/ActionsDropdown.vue'
-
 import type { Product } from "@/products/interfaces";
+
+import { kebabCaseToTitleCase } from '@/utils/string';
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -44,7 +45,7 @@ export const columns: ColumnDef<Product>[] = [
     header: 'Category',
     cell: ({ row }) => {
       const category = row.getValue("category") as string
-      const categoryStartCase = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()
+      const categoryStartCase = kebabCaseToTitleCase(category);
       return h(Badge, {}, () => categoryStartCase)
     }
   },

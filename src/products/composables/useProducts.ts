@@ -1,5 +1,3 @@
-// import { watchEffect } from "vue";
-// import { computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useQuery, useQueryClient } from "@tanstack/vue-query";
 import { watch } from "vue";
@@ -7,33 +5,26 @@ import { watch } from "vue";
 import { getProducts } from "@/products/api/helpers/getProducts";
 import { useProductsStore } from "@/stores/products";
 
+import { APP_CONFIG_SETTINGS } from '@/shared/constants/appConfigSettings';
+
+const productsDefaultLimit = APP_CONFIG_SETTINGS.PRODUCTS_LIST_DEFAULT_LIMIT;
+
 interface Options {
   autoload?: boolean;
-}
-// TODO: DELETE ME, FOR DEBUGGIN
-// This code is only for TypeScript
-declare global {
-  interface Window {
-    __TANSTACK_QUERY_CLIENT__:
-      import("@tanstack/query-core").QueryClient;
-  }
 }
 
 export const useProducts = ( options?: Options ) => {
 
   const store = useProductsStore();
-  const { currentPage, products, total } = storeToRefs( store );
+  const { currentPage, currentProductPosition, products, total, totalPages } = storeToRefs( store );
 
   const { autoload = true } = options || {};
 
   const queryClient = useQueryClient();
 
-  // This code is for all users
-  window.__TANSTACK_QUERY_CLIENT__ = queryClient;
-
   const { isLoading, data, isError, error } = useQuery({
-    queryKey: ['products?page=', currentPage],
-    queryFn: () => getProducts(currentPage.value),
+    queryKey: ['products', { page: currentPage }],
+    queryFn: () => getProducts(currentProductPosition.value),
     staleTime: 60 * 1000,
     enabled: autoload,
     retry: 0,
@@ -43,36 +34,32 @@ export const useProducts = ( options?: Options ) => {
     refetchInterval: 60 * 1000,
   });
 
-  const goToPage = (page: number) => {
-    if(currentPage.value < page)
-      prefetchPage(page + 1);
-    else
-      prefetchPage(page - 1);
 
+  const goToPage = (page: number) => {
     store.setPage(page);
   }
 
   const prefetchPage = (page: number) => queryClient.prefetchQuery({
-    queryKey: ['products?page=', page],
-    queryFn: () => getProducts(page),
+    queryKey: ['products', { page }],
+    queryFn: () => getProducts(page * productsDefaultLimit),
+    staleTime: 1000 * 15,
   });
 
-  // TODO: Verify it's not first page
-  if(currentPage.value > 1)
-    prefetchPage(currentPage.value - 1);
-
-  // TODO: Verify it's not last page
-  if(currentPage.value < total.value)
-    prefetchPage(currentPage.value + 1);
 
 
-  watch(data, productsResponse => {
-    console.log('productsResponse', productsResponse);
-    if(productsResponse){
-      store.setProducts(productsResponse.products);
-      store.setTotal(productsResponse.total);
+  watch(data, products => {
+    if(products){
+      store.setProducts(products.products);
+      store.setTotal(products.total);
     }
-  });
+
+    if(currentPage.value < totalPages.value){
+      console.log('prefetching page', currentPage.value + 1);
+      prefetchPage(currentPage.value + 1);
+    }
+  }, { immediate: true });
+
+
 
   return {
     // Properties
@@ -81,12 +68,12 @@ export const useProducts = ( options?: Options ) => {
     error,
     products,
     total,
+    currentPage,
 
     // Methods
     goToPage,
 
     // Computed
-    // products: computed(() => response.value?.products ?? []),
   }
 }
 
