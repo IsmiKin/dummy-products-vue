@@ -1,7 +1,6 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-import type { Product } from '@/products/interfaces/product';
-import type { ProductsCategories } from '@/products/interfaces';
+import type { ProductBasic, ProductsCategories } from '@/products/interfaces';
 
 import { APP_CONFIG_SETTINGS } from '@/shared/constants/appConfigSettings';
 
@@ -11,7 +10,7 @@ export const useProductsStore = defineStore('products', () => {
 
     const currentPage = ref<number>(1);
     const total = ref<number>(5);
-    const products = ref<Product[]>([]);
+    const products = ref<ProductBasic[]>([]);
     const searchValue = ref<string>('');
     const categories = ref<ProductsCategories>([]);
     const categorySelected = ref<string>('');
@@ -30,29 +29,33 @@ export const useProductsStore = defineStore('products', () => {
         currentProductPosition: computed(() => (currentPage.value - 1) * productsDefaultLimit),
 
         // Actions
-        setProducts(newProducts: Product[]) {
-            products.value = newProducts;
+        setProducts(newProducts: ProductBasic[]) {
+          products.value = newProducts;
         },
-        appendProducts(newProducts: Product[]) {
-            products.value.push(...newProducts);
+        appendProducts(newProducts: ProductBasic[]) {
+          products.value = [...products.value, ...newProducts];
         },
         setPage(page: number = 1) {
-            if (currentPage.value === page) return;
-            if (page <= 0) return;
+          if (currentPage.value === page) return;
+          if (page <= 0) return;
 
-            currentPage.value = page;
+          currentPage.value = page;
         },
         setTotal(newTotal: number) {
-            total.value = newTotal;
+          total.value = newTotal;
         },
         setSearchValue(newSearchValue: string = '') {
-            searchValue.value = newSearchValue;
+          searchValue.value = newSearchValue;
         },
         setCategorySelected(newCategorySelected: string = '') {
-            categorySelected.value = newCategorySelected;
+          categorySelected.value = newCategorySelected;
         },
         setCategories(newCategories: ProductsCategories = []) {
-            categories.value = newCategories;
+          categories.value = newCategories;
+        },
+        addProduct(product: ProductBasic) {
+          products.value = [product, ...products.value];
+          total.value++;
         }
 
     }

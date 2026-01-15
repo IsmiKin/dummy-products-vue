@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="TData extends Product, TValue">
+<script setup lang="ts" generic="TData extends ProductBasic, TValue">
 import { useVueTable, getCoreRowModel, type ColumnDef } from "@tanstack/vue-table";
 
 import {
@@ -17,7 +17,7 @@ import { useProducts } from '@/products/composables/useProducts';
 import TablePagination from '@/components/TablePagination/TablePagination.vue';
 
 import { APP_CONFIG_SETTINGS } from '@/shared/constants/appConfigSettings';
-import type { Product } from "@/products/interfaces";
+import type { ProductBasic } from "@/products/interfaces";
 
 const productsDefaultLimit = APP_CONFIG_SETTINGS.PRODUCTS_LIST_DEFAULT_LIMIT;
 

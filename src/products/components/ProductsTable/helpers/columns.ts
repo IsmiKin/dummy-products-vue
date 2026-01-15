@@ -5,11 +5,11 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 
 import DropdownAction from '@/products/components/ProductsTable/ActionsDropdown.vue'
-import type { Product } from "@/products/interfaces";
+import type { ProductBasic } from "@/products/interfaces";
 
 import { kebabCaseToTitleCase } from '@/utils/string';
 
-export const computeTableColumns = ({displayProductInfoFn}: {displayProductInfoFn: (id: number) => void}): ColumnDef<Product>[] => [
+export const computeTableColumns = ({displayProductInfoFn}: {displayProductInfoFn: (id: number) => void}): ColumnDef<ProductBasic>[] => [
   {
     accessorKey: 'thumbnail',
     header: '',
@@ -17,7 +17,7 @@ export const computeTableColumns = ({displayProductInfoFn}: {displayProductInfoF
       const product = row.original
 
       return h('img', {
-        src: product.thumbnail,
+        src: product.thumbnail || '/fallback-image.png',
         alt: product.title,
         class: 'w-16 h-16 object-cover'
       })

@@ -13,7 +13,7 @@ import ProductModal from '@/products/components/ProductModal/ProductModal.vue'
 import { useProduct } from '@/products/composables/useProduct';
 import { useProducts } from '@/products/composables/useProducts';
 import { computeTableColumns } from '@/products/components/ProductsTable/helpers/columns';
-import type { ProductBasic } from '../interfaces';
+import type { ProductFormData } from '@/products/interfaces';
 
 const isProductInfoOpen = ref(false);
 const isProductModalOpen = ref(false);
@@ -21,7 +21,7 @@ const productId = ref<string | number>('');
 
 const { data: currentProduct } = useProduct(productId);
 
-const { products, isLoading: isLoadingProducts, isError: isErrorProducts, error: errorProducts, goToPage, categories, categorySelected, setCategorySelected, searchValue, setSearchValue } = useProducts();
+const { products, isLoading: isLoadingProducts, isError: isErrorProducts, error: errorProducts, goToPage, categories, categorySelected, setCategorySelected, searchValue, setSearchValue, createProduct } = useProducts();
 
 const resetStatus = () => {
   goToPage(1);
@@ -48,8 +48,18 @@ const displayProductInfo = (id: number) => {
   productId.value = id;
 }
 
-const handleCreateProduct = (product: ProductBasic) => {
-  console.log(product);
+const handleCreateProduct = (formData: ProductFormData) => {
+  // Transform form data to ProductBasic format
+  const product = {
+    id: Date.now(), // Generate a temporary ID
+    title: formData.title,
+    price: formData.price,
+    description: formData.description || '',
+    category: formData.category,
+    thumbnail: '',
+  };
+
+  createProduct(product);
 }
 
 const columns = computeTableColumns({

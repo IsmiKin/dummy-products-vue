@@ -7,6 +7,7 @@ import { toast } from 'vue-sonner'
 import * as z from 'zod'
 
 import type { ProductsCategories } from '@/products/interfaces/products-categories-response'
+import type { ProductFormData } from '@/products/interfaces'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -38,7 +39,10 @@ interface ProductModalProps {
   categories: ProductsCategories;
 }
 
-const emit = defineEmits(['update:is-open'])
+const emit = defineEmits<{
+  'update:is-open': [value: boolean]
+  'create-product': [product: ProductFormData]
+}>()
 defineProps<ProductModalProps>();
 
 const productSchema = z.object({

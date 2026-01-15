@@ -94,6 +94,7 @@ export const useProducts = ( options?: Options ) => {
     goToPage: store.setPage,
     setSearchValue: store.setSearchValue,
     setCategorySelected: store.setCategorySelected,
+    createProduct: store.addProduct,
 
     // Computed
   }
