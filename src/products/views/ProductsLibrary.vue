@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { IconError404 } from '@tabler/icons-vue';
 
 import ProductsTable from '@/products/components/ProductsTable/ProductsTable.vue'
 import ProductsTableSkeleton from '@/products/components/ProductsTableSkeleton.vue/ProductsTableSkeleton.vue'
 import ProductsTableFilters from '@/products/components/ProductsTableFilters/ProductsTableFilters.vue'
+import ProductsInfoSheet from '@/products/components/ProductsInfoSheet.vue/ProductsInfoSheet.vue'
 
 import { useProducts } from '@/products/composables/useProducts';
-import { columns } from '@/products/components/ProductsTable/helpers/columns';
+import { computeTableColumns } from '@/products/components/ProductsTable/helpers/columns';
+import type { Product } from '@/products/interfaces';
 
-const { products, isLoading, isError, error, goToPage, categories, categorySelected, setCategorySelected, searchValue, setSearchValue } = useProducts();
+const { products, isLoading, isError, error, goToPage, categories, categorySelected, setCategorySelected, searchValue, setSearchValue, getProductById } = useProducts();
+
+const currentProduct = ref<Product | null>(null);
+const isProductInfoOpen = ref(false);
 
 const resetStatus = () => {
   goToPage(1);
@@ -31,6 +36,15 @@ const handleSearchChange = (search: string) => {
   setSearchValue(search);
 }
 
+const displayProductInfo = async (id: number) => {
+  currentProduct.value = await getProductById(id);
+  isProductInfoOpen.value = true;
+}
+
+const columns = computeTableColumns({
+  displayProductInfoFn: displayProductInfo
+});
+
 onMounted(() => {
   resetStatus();
 })
@@ -46,6 +60,7 @@ onMounted(() => {
     <ProductsTableSkeleton v-if="isLoading" />
     <ProductsTable v-else :columns="columns" :data="products" />
 
+    <ProductsInfoSheet :is-open="isProductInfoOpen" @update:is-open="isProductInfoOpen = $event" />
     <p v-if="isError">
       <IconError404 />
       Error: {{ error }}

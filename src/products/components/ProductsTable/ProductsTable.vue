@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="TData, TValue">
+<script setup lang="ts" generic="TData extends Product, TValue">
 import { useVueTable, getCoreRowModel, type ColumnDef } from "@tanstack/vue-table";
 
 import {
@@ -16,6 +16,7 @@ import { useProducts } from '@/products/composables/useProducts';
 import TablePagination from '@/components/TablePagination/TablePagination.vue';
 
 import { APP_CONFIG_SETTINGS } from '@/shared/constants/appConfigSettings';
+import type { Product } from "@/products/interfaces";
 
 const productsDefaultLimit = APP_CONFIG_SETTINGS.PRODUCTS_LIST_DEFAULT_LIMIT;
 
@@ -24,7 +25,7 @@ const props = defineProps<{
   data: TData[]
 }>()
 
-const { goToPage, total, currentPage } = useProducts({ autoload: false });
+const { goToPage, total, currentPage, prefetchProductInfo } = useProducts({ autoload: false });
 
 const table = useVueTable({
   get data() { return props.data },
@@ -71,7 +72,8 @@ const table = useVueTable({
         <TableBody>
           <template v-if="table.getRowModel().rows?.length">
             <TableRow v-for="row in table.getRowModel().rows" :key="row.id">
-              <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+              <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id"
+                @mouseover="prefetchProductInfo(cell.row.original.id)">
                 <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
               </TableCell>
             </TableRow>

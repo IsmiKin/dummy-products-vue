@@ -6,8 +6,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 
 defineProps<{
   product: {
-    id: number
+    id: number,
   }
+  displayProductInfoFn: (id: number) => void
 }>()
 
 // TODO: Extract to file and add tests
@@ -31,7 +32,7 @@ function copy(id: number) {
         <IconCopy /> Copy product ID
       </DropdownMenuItem>
       <DropdownMenuSeparator />
-      <DropdownMenuItem>
+      <DropdownMenuItem @click="displayProductInfoFn(product.id)">
         <IconEye /> View product details
       </DropdownMenuItem>
       <DropdownMenuItem>

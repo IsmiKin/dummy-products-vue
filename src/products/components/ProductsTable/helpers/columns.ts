@@ -9,7 +9,7 @@ import type { Product } from "@/products/interfaces";
 
 import { kebabCaseToTitleCase } from '@/utils/string';
 
-export const columns: ColumnDef<Product>[] = [
+export const computeTableColumns = ({displayProductInfoFn}: {displayProductInfoFn: (id: number) => void}): ColumnDef<Product>[] => [
   {
     accessorKey: 'thumbnail',
     header: '',
@@ -69,7 +69,8 @@ export const columns: ColumnDef<Product>[] = [
     const product = row.original
 
     return h('div', { class: 'relative' }, h(DropdownAction, {
-      product
+      product,
+      displayProductInfoFn
     }))
   },
   },

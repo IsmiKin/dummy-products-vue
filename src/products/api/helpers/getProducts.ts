@@ -1,5 +1,5 @@
 import productsApi from '@/products/api/productsApi';
-import type { ProductsListResponse } from '@/products/interfaces';
+import type { Product, ProductsListResponse } from '@/products/interfaces';
 import type { ProductsCategories } from '@/products/interfaces';
 
 import { APP_CONFIG_SETTINGS } from '@/shared/constants/appConfigSettings';
@@ -54,5 +54,16 @@ export const getCategories = async(): Promise<ProductsCategories> => {
     params.set('delay', '1000');
 
     const { data } = await productsApi.get<ProductsCategories>(`/${entityApiUrl}/categories`, { params });
+    return data;
+}
+
+export const getProductById = async(id: string | number): Promise<Product> => {
+
+    const idString = id.toString();
+    const params = new URLSearchParams();
+    // TODO: Remove delay after testing
+    params.set('delay', '1000');
+
+    const { data } = await productsApi.get<Product>(`/${entityApiUrl}/${idString}`, { params });
     return data;
 }
