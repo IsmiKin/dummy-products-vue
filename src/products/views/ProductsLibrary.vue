@@ -8,12 +8,15 @@ import ProductsTable from '@/products/components/ProductsTable/ProductsTable.vue
 import ProductsTableSkeleton from '@/products/components/ProductsTableSkeleton.vue/ProductsTableSkeleton.vue'
 import ProductsTableFilters from '@/products/components/ProductsTableFilters/ProductsTableFilters.vue'
 import ProductsInfoSheet from '@/products/components/ProductsInfoSheet/ProductsInfoSheet.vue'
+import ProductModal from '@/products/components/ProductModal/ProductModal.vue'
 
 import { useProduct } from '@/products/composables/useProduct';
 import { useProducts } from '@/products/composables/useProducts';
 import { computeTableColumns } from '@/products/components/ProductsTable/helpers/columns';
+import type { ProductBasic } from '../interfaces';
 
 const isProductInfoOpen = ref(false);
+const isProductModalOpen = ref(false);
 const productId = ref<string | number>('');
 
 const { data: currentProduct } = useProduct(productId);
@@ -45,6 +48,10 @@ const displayProductInfo = (id: number) => {
   productId.value = id;
 }
 
+const handleCreateProduct = (product: ProductBasic) => {
+  console.log(product);
+}
+
 const columns = computeTableColumns({
   displayProductInfoFn: displayProductInfo
 });
@@ -58,7 +65,7 @@ onMounted(() => {
   <div class="flex flex-col gap-4">
     <div class="flex">
       <h1 class="text-2xl font-semibold">Products</h1>
-      <Button class="ml-auto">
+      <Button class="ml-auto" @click="isProductModalOpen = true">
         <IconPlus />
         Add Product
       </Button>
@@ -69,8 +76,12 @@ onMounted(() => {
       @update:search-value="handleSearchChange" @update:category-selected="handleCategoryChange" />
     <ProductsTableSkeleton v-if="isLoadingProducts" />
     <ProductsTable v-else :columns="columns" :data="products" />
+
     <ProductsInfoSheet :product="currentProduct" :is-open="isProductInfoOpen"
       @update:is-open="isProductInfoOpen = $event" />
+    <ProductModal :is-open="isProductModalOpen" :categories="categories" @create-product="handleCreateProduct"
+      @update:is-open="isProductModalOpen = $event" />
+
     <p v-if="isErrorProducts">
       <IconError404 />
       Error: {{ errorProducts }}
