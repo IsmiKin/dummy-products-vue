@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Product } from '@/products/interfaces';
 import {
   Sheet,
   SheetClose,
@@ -10,22 +11,25 @@ import {
 } from '@/components/ui/sheet';
 
 import Badge from '@/components/ui/badge/Badge.vue';
-
 import Button from '@/components/ui/button/Button.vue'
+
+import { kebabCaseToTitleCase } from '@/utils/string';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+
 interface Props {
   isOpen: boolean
+  product?: Product
 }
 
 const emit = defineEmits(['update:isOpen']);
 
-const props = defineProps<Props>();
+defineProps<Props>();
 
 </script>
 
 <template>
   <div>
-    <Sheet :open="props.isOpen" @update:open="emit('update:isOpen', $event)">
+    <Sheet v-if="product" :open="isOpen" @update:open="emit('update:isOpen', $event)">
       <SheetContent>
         <SheetHeader>
           <SheetTitle>
@@ -34,13 +38,12 @@ const props = defineProps<Props>();
           <SheetDescription>
             <div class="flex items-center justify-between border-b border-zinc-800 p-6">
               <div class="flex gap-4">
-                <img
-                  src="https://images.unsplash.com/photo-1511485977113-f34c92461ad9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                  alt="iPhone 15 Pro Max" class="w-32 h-32 rounded-lg object-cover bg-zinc-800" />
+                <img :src="product?.thumbnail" :alt="product?.title"
+                  class="w-32 h-32 rounded-lg object-cover bg-zinc-800" />
                 <div class="flex-1">
-                  <h3 class="text-2xl font-semibold text-balance leading-tight">iPhone 15 Pro Max</h3>
-                  <Badge class="mt-2">
-                    smartphones
+                  <h3 class="text-lg font-semibold text-balance leading-tight">{{ product?.title }}</h3>
+                  <Badge class="mt-4">
+                    {{ kebabCaseToTitleCase(product?.category) }}
                   </Badge>
                   <div class="flex flex-col gap-2 mt-3">
                     <div class="flex">
@@ -128,5 +131,6 @@ const props = defineProps<Props>();
         </SheetFooter>
       </SheetContent>
     </Sheet>
+    <div v-else>Loadding</div>
   </div>
 </template>

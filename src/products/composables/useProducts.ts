@@ -2,7 +2,7 @@ import { storeToRefs } from "pinia";
 import { useQuery, useQueryClient } from "@tanstack/vue-query";
 import { watch } from "vue";
 
-import { getProducts, getCategories, getProductById } from "@/products/api/helpers/getProducts";
+import { getProducts, getCategories } from "@/products/api/helpers/getProducts";
 import { useProductsStore } from "@/stores/products";
 
 import { APP_CONFIG_SETTINGS } from '@/shared/constants/appConfigSettings';
@@ -61,14 +61,6 @@ export const useProducts = ( options?: Options ) => {
     });
   }
 
-  const prefetchProductInfo = (id: string) => {
-    queryClient.prefetchQuery({
-      queryKey: ['product', id],
-      queryFn: () => getProductById(id),
-      staleTime: 1000 * 15,
-    });
-  }
-
   watch(data, products => {
     if(products){
       store.setProducts(products.products);
@@ -102,8 +94,6 @@ export const useProducts = ( options?: Options ) => {
     goToPage: store.setPage,
     setSearchValue: store.setSearchValue,
     setCategorySelected: store.setCategorySelected,
-    getProductById,
-    prefetchProductInfo,
 
     // Computed
   }

@@ -7,14 +7,16 @@ import ProductsTableSkeleton from '@/products/components/ProductsTableSkeleton.v
 import ProductsTableFilters from '@/products/components/ProductsTableFilters/ProductsTableFilters.vue'
 import ProductsInfoSheet from '@/products/components/ProductsInfoSheet.vue/ProductsInfoSheet.vue'
 
+import { useProduct } from '@/products/composables/useProduct';
 import { useProducts } from '@/products/composables/useProducts';
 import { computeTableColumns } from '@/products/components/ProductsTable/helpers/columns';
-import type { Product } from '@/products/interfaces';
 
-const { products, isLoading, isError, error, goToPage, categories, categorySelected, setCategorySelected, searchValue, setSearchValue, getProductById } = useProducts();
-
-const currentProduct = ref<Product | null>(null);
 const isProductInfoOpen = ref(false);
+const productId = ref<string | number>('');
+
+const { data: currentProduct } = useProduct(productId);
+
+const { products, isLoading: isLoadingProducts, isError: isErrorProducts, error: errorProducts, goToPage, categories, categorySelected, setCategorySelected, searchValue, setSearchValue } = useProducts();
 
 const resetStatus = () => {
   goToPage(1);
@@ -36,9 +38,9 @@ const handleSearchChange = (search: string) => {
   setSearchValue(search);
 }
 
-const displayProductInfo = async (id: number) => {
-  currentProduct.value = await getProductById(id);
+const displayProductInfo = (id: number) => {
   isProductInfoOpen.value = true;
+  productId.value = id;
 }
 
 const columns = computeTableColumns({
@@ -52,18 +54,17 @@ onMounted(() => {
 </script>
 <template>
   <div class="flex flex-col gap-4">
-
     <h1 class="text-2xl font-semibold">Products</h1>
 
     <ProductsTableFilters :categories="categories" :category-selected="categorySelected" :search-value="searchValue"
       @update:search-value="handleSearchChange" @update:category-selected="handleCategoryChange" />
-    <ProductsTableSkeleton v-if="isLoading" />
+    <ProductsTableSkeleton v-if="isLoadingProducts" />
     <ProductsTable v-else :columns="columns" :data="products" />
-
-    <ProductsInfoSheet :is-open="isProductInfoOpen" @update:is-open="isProductInfoOpen = $event" />
-    <p v-if="isError">
+    <ProductsInfoSheet :product="currentProduct" :is-open="isProductInfoOpen"
+      @update:is-open="isProductInfoOpen = $event" />
+    <p v-if="isErrorProducts">
       <IconError404 />
-      Error: {{ error }}
+      Error: {{ errorProducts }}
     </p>
   </div>
 </template>

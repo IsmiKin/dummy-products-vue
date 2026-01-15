@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/table';
 import { FlexRender } from "@tanstack/vue-table";
 
+import { useProduct } from '@/products/composables/useProduct';
 import { useProducts } from '@/products/composables/useProducts';
 
 import TablePagination from '@/components/TablePagination/TablePagination.vue';
@@ -25,7 +26,8 @@ const props = defineProps<{
   data: TData[]
 }>()
 
-const { goToPage, total, currentPage, prefetchProductInfo } = useProducts({ autoload: false });
+const { prefetchProductInfo } = useProduct();
+const { goToPage, total, currentPage } = useProducts({ autoload: false });
 
 const table = useVueTable({
   get data() { return props.data },
