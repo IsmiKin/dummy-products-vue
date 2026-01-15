@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { IconError404 } from '@tabler/icons-vue';
+import { IconError404, IconPlus } from '@tabler/icons-vue';
+
+import Button from '@/components/ui/button/Button.vue'
 
 import ProductsTable from '@/products/components/ProductsTable/ProductsTable.vue'
 import ProductsTableSkeleton from '@/products/components/ProductsTableSkeleton.vue/ProductsTableSkeleton.vue'
 import ProductsTableFilters from '@/products/components/ProductsTableFilters/ProductsTableFilters.vue'
-import ProductsInfoSheet from '@/products/components/ProductsInfoSheet.vue/ProductsInfoSheet.vue'
+import ProductsInfoSheet from '@/products/components/ProductsInfoSheet/ProductsInfoSheet.vue'
 
 import { useProduct } from '@/products/composables/useProduct';
 import { useProducts } from '@/products/composables/useProducts';
@@ -54,7 +56,14 @@ onMounted(() => {
 </script>
 <template>
   <div class="flex flex-col gap-4">
-    <h1 class="text-2xl font-semibold">Products</h1>
+    <div class="flex">
+      <h1 class="text-2xl font-semibold">Products</h1>
+      <Button class="ml-auto">
+        <IconPlus />
+        Add Product
+      </Button>
+    </div>
+
 
     <ProductsTableFilters :categories="categories" :category-selected="categorySelected" :search-value="searchValue"
       @update:search-value="handleSearchChange" @update:category-selected="handleCategoryChange" />
