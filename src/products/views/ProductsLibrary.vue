@@ -9,11 +9,16 @@ import ProductsTableFilters from '@/products/components/ProductsTableFilters/Pro
 import { useProducts } from '@/products/composables/useProducts';
 import { columns } from '@/products/components/ProductsTable/helpers/columns';
 
-const { products, isLoading, isError, error, goToPage, resetSearch, searchValue, setSearchValue } = useProducts();
+const { products, isLoading, isError, error, goToPage, categories, categorySelected, setCategorySelected, searchValue, setSearchValue } = useProducts();
+
+const resetStatus = () => {
+  goToPage(1);
+  setSearchValue();
+  setCategorySelected();
+}
 
 onMounted(() => {
-  goToPage(1);
-  resetSearch();
+  resetStatus();
 })
 
 </script>
@@ -22,7 +27,8 @@ onMounted(() => {
 
     <h1 class="text-2xl font-semibold">Products</h1>
 
-    <ProductsTableFilters :search-value="searchValue" @update:search-value="setSearchValue" />
+    <ProductsTableFilters :categories="categories" :category-selected="categorySelected" :search-value="searchValue"
+      @update:search-value="setSearchValue" @update:category-selected="setCategorySelected" />
     <ProductsTableSkeleton v-if="isLoading" />
     <ProductsTable v-else :columns="columns" :data="products" />
 

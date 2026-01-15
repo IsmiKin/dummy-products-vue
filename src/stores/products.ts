@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import type { Product } from '@/products/interfaces/product';
+import type { ProductsCategories } from '@/products/interfaces';
 
 import { APP_CONFIG_SETTINGS } from '@/shared/constants/appConfigSettings';
 
@@ -12,6 +13,8 @@ export const useProductsStore = defineStore('products', () => {
     const total = ref<number>(5);
     const products = ref<Product[]>([]);
     const searchValue = ref<string>('');
+    const categories = ref<ProductsCategories>([]);
+    const categorySelected = ref<string>('');
 
     return {
         // State
@@ -19,6 +22,8 @@ export const useProductsStore = defineStore('products', () => {
         total,
         products,
         searchValue,
+        categories,
+        categorySelected,
 
         // Getters
         totalPages: computed(() => Math.ceil(total.value / productsDefaultLimit)),
@@ -31,7 +36,7 @@ export const useProductsStore = defineStore('products', () => {
         appendProducts(newProducts: Product[]) {
             products.value.push(...newProducts);
         },
-        setPage(page: number) {
+        setPage(page: number = 1) {
             if (currentPage.value === page) return;
             if (page <= 0) return;
 
@@ -40,8 +45,14 @@ export const useProductsStore = defineStore('products', () => {
         setTotal(newTotal: number) {
             total.value = newTotal;
         },
-        setSearchValue(newSearchValue: string) {
+        setSearchValue(newSearchValue: string = '') {
             searchValue.value = newSearchValue;
+        },
+        setCategorySelected(newCategorySelected: string = '') {
+            categorySelected.value = newCategorySelected;
+        },
+        setCategories(newCategories: ProductsCategories = []) {
+            categories.value = newCategories;
         }
 
     }
