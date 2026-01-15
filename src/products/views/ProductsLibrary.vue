@@ -17,6 +17,20 @@ const resetStatus = () => {
   setCategorySelected();
 }
 
+const handleCategoryChange = (category: string) => {
+  if (categorySelected.value !== category) {
+    goToPage(1);
+  }
+  setCategorySelected(category);
+}
+
+const handleSearchChange = (search: string) => {
+  if (searchValue.value !== search) {
+    goToPage(1);
+  }
+  setSearchValue(search);
+}
+
 onMounted(() => {
   resetStatus();
 })
@@ -28,7 +42,7 @@ onMounted(() => {
     <h1 class="text-2xl font-semibold">Products</h1>
 
     <ProductsTableFilters :categories="categories" :category-selected="categorySelected" :search-value="searchValue"
-      @update:search-value="setSearchValue" @update:category-selected="setCategorySelected" />
+      @update:search-value="handleSearchChange" @update:category-selected="handleCategoryChange" />
     <ProductsTableSkeleton v-if="isLoading" />
     <ProductsTable v-else :columns="columns" :data="products" />
 

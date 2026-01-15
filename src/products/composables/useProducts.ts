@@ -32,8 +32,8 @@ export const useProducts = ( options?: Options ) => {
   const queryClient = useQueryClient();
 
   const { isLoading, data, isError, error } = useQuery({
-    queryKey: ['products', { page: currentPage, search: searchValue }],
-    queryFn: () => getProducts(currentProductPosition.value, searchValue.value),
+    queryKey: ['products', { page: currentPage, search: searchValue, category: categorySelected }],
+    queryFn: () => getProducts(currentProductPosition.value, searchValue.value, categorySelected.value),
     staleTime: 60 * 1000,
     enabled: autoload,
     retry: 0,
@@ -53,19 +53,12 @@ export const useProducts = ( options?: Options ) => {
     refetchInterval: 60 * 1000,
   });
 
-  // TODO: Move into another composable
-  const goToPage = (page: number) => {
-    store.setPage(page);
-  }
-
-  const prefetchPage = (page: number) => queryClient.prefetchQuery({
-    queryKey: ['products', { page, search: searchValue }],
-    queryFn: () => getProducts(page * productsDefaultLimit, searchValue.value),
-    staleTime: 1000 * 15,
-  });
-
-  const resetSearch = () => {
-    store.setSearchValue('');
+  const prefetchPage = (page: number) => {
+    queryClient.prefetchQuery({
+      queryKey: ['products', { page, search: searchValue.value, category: categorySelected.value }],
+      queryFn: () => getProducts(page * productsDefaultLimit, searchValue.value, categorySelected.value),
+      staleTime: 1000 * 15,
+    });
   }
 
   watch(data, products => {
@@ -98,8 +91,7 @@ export const useProducts = ( options?: Options ) => {
     categories,
 
     // Methods
-    goToPage,
-    resetSearch,
+    goToPage: store.setPage,
     setSearchValue: store.setSearchValue,
     setCategorySelected: store.setCategorySelected,
 

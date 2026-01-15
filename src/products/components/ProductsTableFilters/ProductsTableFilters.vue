@@ -25,12 +25,18 @@ const emit = defineEmits<{
 
 const searchModel = computed({
   get: () => props.searchValue,
-  set: (value) => emit('update:search-value', value),
+  set: (value) => {
+    emit('update:search-value', value)
+    emit('update:category-selected', '')
+  },
 });
 
 const categoryModel = computed({
   get: () => props.categorySelected,
-  set: (value) => emit('update:category-selected', value),
+  set: (value) => {
+    emit('update:category-selected', value)
+    emit('update:search-value', '')
+  },
 });
 </script>
 
@@ -45,7 +51,7 @@ const categoryModel = computed({
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Categories</SelectLabel>
-          <SelectItem v-for="category in categories" :key="category.slug" :value="category.name">
+          <SelectItem v-for="category in categories" :key="category.slug" :value="category.slug">
             {{ category.name }}
           </SelectItem>
         </SelectGroup>

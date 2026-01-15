@@ -7,13 +7,27 @@ import { APP_CONFIG_SETTINGS } from '@/shared/constants/appConfigSettings';
 const entityApiUrl = 'products';
 
 // TODO: Integrate zod
-const productsDefaultLimit = APP_CONFIG_SETTINGS.PRODUCTS_LIST_DEFAULT_LIMIT;
+const PRODUCTS_DEFAULT_LIMIT = APP_CONFIG_SETTINGS.PRODUCTS_LIST_DEFAULT_LIMIT;
+const REQUIRED_PRODUCTS_FIELDS = ['id', 'thumbnail', 'title', 'price', 'category', 'stock'];
 
-export const getProducts = async(position: number = 1, searchValue: string = ''): Promise<ProductsListResponse> => {
+export const getProducts = async(position: number = 1, searchValue: string = '', category: string = '') => {
+  const commonParams = {
+    select: REQUIRED_PRODUCTS_FIELDS.join(','),
+    skip: position.toString(),
+    limit: PRODUCTS_DEFAULT_LIMIT.toString(),
+  }
 
-    const params = new URLSearchParams();
-    params.set('skip', position.toString());
-    params.set('limit', productsDefaultLimit.toString());
+  const params = new URLSearchParams(commonParams);
+
+  if(category){
+    return getProductsByCategory(params, category);
+  }
+
+  return getProductsBySearch(params, searchValue);
+
+}
+
+export const getProductsBySearch = async(params: URLSearchParams, searchValue: string = ''): Promise<ProductsListResponse> => {
     if(searchValue) {
         params.set('q', searchValue);
     }
@@ -25,10 +39,7 @@ export const getProducts = async(position: number = 1, searchValue: string = '')
     return data;
 }
 
-export const getProductsByCategory = async(category: string): Promise<ProductsListResponse> => {
-
-    const params = new URLSearchParams();
-
+export const getProductsByCategory = async(params: URLSearchParams, category: string): Promise<ProductsListResponse> => {
     // TODO: Remove delay after testing
     params.set('delay', '1000');
 
