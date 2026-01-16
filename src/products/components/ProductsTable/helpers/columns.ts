@@ -15,6 +15,23 @@ interface ComputeTableColumnsProps {
   handleDeleteProductFn: (id: number) => void;
 }
 
+/**
+ * Generates column definitions for the products table with integrated action handlers.
+ * Creates columns for thumbnail, title, price, category, stock, and actions dropdown.
+ * 
+ * @param props - Configuration object containing action handler functions
+ * @param props.displayProductInfoFn - Callback to display product details
+ * @param props.handleEditProductFn - Callback to edit a product
+ * @param props.handleDeleteProductFn - Callback to delete a product
+ * @returns Array of column definitions for TanStack Table
+ * 
+ * @example
+ * const columns = computeTableColumns({
+ *   displayProductInfoFn: (id) => showInfo(id),
+ *   handleEditProductFn: (id) => editProduct(id),
+ *   handleDeleteProductFn: (id) => deleteProduct(id)
+ * })
+ */
 export const computeTableColumns = ({displayProductInfoFn, handleEditProductFn, handleDeleteProductFn}: ComputeTableColumnsProps): ColumnDef<ProductBasic>[] => [
   {
     accessorKey: 'thumbnail',
