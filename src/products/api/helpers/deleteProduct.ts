@@ -1,5 +1,7 @@
 import productsApi from '@/products/api/productsApi';
 import type { Product } from '@/products/interfaces';
+import { ProductSchema } from '@/products/schemas/product.schema';
+import { validateApiResponse } from '@/utils/apiValidation';
 
 /**
  * Deletes a product by its ID via the API.
@@ -12,5 +14,5 @@ import type { Product } from '@/products/interfaces';
  */
 export const deleteProduct = async(id: number): Promise<Product> => {
   const { data } = await productsApi.delete(`products/${id}`);
-  return data;
+  return validateApiResponse(ProductSchema, data);
 }

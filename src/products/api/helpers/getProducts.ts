@@ -1,12 +1,13 @@
 import productsApi from '@/products/api/productsApi';
 import type { Product, ProductsListResponse } from '@/products/interfaces';
 import type { ProductsCategories } from '@/products/interfaces';
+import { ProductSchema, ProductsListResponseSchema, ProductsCategoriesSchema } from '@/products/schemas/product.schema';
+import { validateApiResponse } from '@/utils/apiValidation';
 
 import { APP_CONFIG_SETTINGS } from '@/shared/constants/appConfigSettings';
 
 const entityApiUrl = 'products';
 
-// TODO: Integrate zod
 const PRODUCTS_DEFAULT_LIMIT = APP_CONFIG_SETTINGS.PRODUCTS_LIST_DEFAULT_LIMIT;
 const REQUIRED_PRODUCTS_FIELDS = ['id', 'thumbnail', 'title', 'price', 'category', 'stock'];
 
@@ -62,7 +63,7 @@ export const getProductsBySearch = async(params: URLSearchParams, searchValue: s
     }
 
     const { data } = await productsApi.get<ProductsListResponse>(`/${entityApiUrl}/search`, { params });
-    return data;
+    return validateApiResponse(ProductsListResponseSchema, data);
 }
 
 /**
@@ -74,7 +75,7 @@ export const getProductsBySearch = async(params: URLSearchParams, searchValue: s
  */
 export const getProductsByCategory = async(params: URLSearchParams, category: string): Promise<ProductsListResponse> => {
     const { data } = await productsApi.get<ProductsListResponse>(`/${entityApiUrl}/category/${category}`, { params });
-    return data;
+    return validateApiResponse(ProductsListResponseSchema, data);
 }
 
 /**
@@ -88,7 +89,7 @@ export const getProductsByCategory = async(params: URLSearchParams, category: st
  */
 export const getCategories = async(): Promise<ProductsCategories> => {
     const { data } = await productsApi.get<ProductsCategories>(`/${entityApiUrl}/categories`);
-    return data;
+    return validateApiResponse(ProductsCategoriesSchema, data);
 }
 
 /**
@@ -105,5 +106,5 @@ export const getProductById = async(id: string | number): Promise<Product> => {
     const idString = id.toString();    
 
     const { data } = await productsApi.get<Product>(`/${entityApiUrl}/${idString}`);
-    return data;
+    return validateApiResponse(ProductSchema, data);
 }

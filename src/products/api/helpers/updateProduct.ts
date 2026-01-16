@@ -1,7 +1,7 @@
 import productsApi from '@/products/api/productsApi';
 import type { ProductFormData, Product } from '@/products/interfaces';
-
-// TODO: Integrate zod
+import { ProductSchema } from '@/products/schemas/product.schema';
+import { validateApiResponse } from '@/utils/apiValidation';
 
 const entityApiUrl = 'products';
 
@@ -29,5 +29,5 @@ export const updateProduct = async(product: ProductFormData & { id: number }): P
   const { id, ...productData } = product;
   
   const { data } = await productsApi.patch(`/${entityApiUrl}/${id}`, productData);
-  return data;
+  return validateApiResponse(ProductSchema, data);
 }

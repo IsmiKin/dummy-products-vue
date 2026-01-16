@@ -1,7 +1,7 @@
 import productsApi from '@/products/api/productsApi';
 import type { ProductFormData, Product } from '@/products/interfaces';
-
-// TODO: Integrate zod
+import { ProductSchema } from '@/products/schemas/product.schema';
+import { validateApiResponse } from '@/utils/apiValidation';
 
 const entityApiUrl = 'products';
 
@@ -21,5 +21,5 @@ const entityApiUrl = 'products';
  */
 export const createProduct = async(product: ProductFormData): Promise<Product> => {  
   const { data } = await productsApi.post(`/${entityApiUrl}/add`, product);
-  return data;
+  return validateApiResponse(ProductSchema, data);
 }
