@@ -1,73 +1,81 @@
-# dummy-products-vue
+# Dummy Products
 
-This template should help get you started developing with Vue 3 in Vite.
+A modern Vue 3 application for managing and viewing products, built with Vite and TypeScript.
 
-## Recommended IDE Setup
+## 🚀 About
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+This project demonstrates a robust architecture using Vue 3 (Composition API). It fetches product data from [DummyJSON](https://dummyjson.com/) and provides a clean, responsive user interface.
 
-## Recommended Browser Setup
+**Key Features:**
+- **State Management:** Powered by [Pinia](https://pinia.vuejs.org/).
+- **Data Fetching:** Efficient server state management using [TanStack Query](https://tanstack.com/query/latest).
+- **UI Components:** Built with [Shadcn Vue](https://www.shadcn-vue.com/) and styled with [Tailwind CSS](https://tailwindcss.com/).
+- **Routing:** SPA navigation with [Vue Router](https://router.vuejs.org/).
+- **Validation:** Form handling and validation using [VeeValidate](https://vee-validate.logaretm.com/) and [Zod](https://zod.dev/).
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## 🛠️ Prerequisites
 
-## Type Support for `.vue` Imports in TS
+- **Node.js**: Version 20.19.0 or >=22.12.0.
+- **Yarn**: Recommended package manager.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## 📦 Installation
 
-## Customize configuration
+1. **Clone the repository:**
+   ```sh
+   git clone <repository-url>
+   cd dummy-products-vue
+   ```
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+2. **Install dependencies:**
+   ```sh
+   yarn install
+   ```
 
-## Project Setup
+3. **Environment Setup:**
+   The project requires environment variables to run. Copy the template file to create your local configuration:
+   ```sh
+   cp .env.template .env
+   ```
+   *Note: The default values in `.env.template` are sufficient for local development.*
 
+## 📂 Project Structure
+
+A brief overview of the `src` directory:
+
+- **`api/`**: API integration and HTTP clients.
+- **`components/`**: Reusable UI components (including Shadcn UI elements).
+- **`layouts/`**: App layout wrappers (e.g., headers, sidebars).
+- **`products/`**: Feature-specific module for product management (views, routes, logic).
+- **`router/`**: Vue Router configuration and route definitions.
+- **`shared/`**: Shared constants, types, and utilities.
+- **`stores/`**: Global Pinia stores.
+- **`views/`**: General page views (e.g., About, generic pages).
+
+## 📜 Available Scripts
+
+| Script | Command | Description |
+| :--- | :--- | :--- |
+| **Development** | `yarn dev` | Starts the development server with Hot Module Replacement (HMR). |
+| **Production Preview** | `yarn start` | Previews the production build locally. |
+| **Build** | `yarn build` | Runs type checks and builds the application for production. |
+| **Test (Unit)** | `yarn test` | Runs unit tests using Vitest. |
+| **Test (E2E)** | `yarn test:e2e` | Runs end-to-end tests using Playwright. |
+| **Lint** | `yarn lint` | Lints and fixes code style issues with ESLint. |
+
+## 🧪 Testing
+
+### Unit Tests
+Run unit tests to verify individual components and logic:
 ```sh
-yarn
+yarn test
 ```
 
-### Compile and Hot-Reload for Development
-
+### End-to-End Tests
+Run e2e tests to simulate user interactions:
 ```sh
-yarn dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-yarn build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-yarn test:unit
-```
-
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
-
-```sh
-# Install browsers for the first run
+# Install browsers (first time only)
 npx playwright install
 
-# When testing on CI, must build the project first
-yarn build
-
-# Runs the end-to-end tests
+# Run tests
 yarn test:e2e
-# Runs the tests only on Chromium
-yarn test:e2e --project=chromium
-# Runs the tests of a specific file
-yarn test:e2e tests/example.spec.ts
-# Runs the tests in debug mode
-yarn test:e2e --debug
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-yarn lint
 ```
