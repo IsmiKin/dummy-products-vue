@@ -32,38 +32,23 @@ export const getProductsBySearch = async(params: URLSearchParams, searchValue: s
         params.set('q', searchValue);
     }
 
-    // TODO: Remove delay after testing
-    params.set('delay', '1000');
-
     const { data } = await productsApi.get<ProductsListResponse>(`/${entityApiUrl}/search`, { params });
     return data;
 }
 
 export const getProductsByCategory = async(params: URLSearchParams, category: string): Promise<ProductsListResponse> => {
-    // TODO: Remove delay after testing
-    params.set('delay', '1000');
-
     const { data } = await productsApi.get<ProductsListResponse>(`/${entityApiUrl}/category/${category}`, { params });
     return data;
 }
 
 export const getCategories = async(): Promise<ProductsCategories> => {
-
-    const params = new URLSearchParams();
-    // TODO: Remove delay after testing
-    params.set('delay', '1000');
-
-    const { data } = await productsApi.get<ProductsCategories>(`/${entityApiUrl}/categories`, { params });
+    const { data } = await productsApi.get<ProductsCategories>(`/${entityApiUrl}/categories`);
     return data;
 }
 
 export const getProductById = async(id: string | number): Promise<Product> => {
+    const idString = id.toString();    
 
-    const idString = id.toString();
-    const params = new URLSearchParams();
-    // TODO: Remove delay after testing
-    params.set('delay', '1000');
-
-    const { data } = await productsApi.get<Product>(`/${entityApiUrl}/${idString}`, { params });
+    const { data } = await productsApi.get<Product>(`/${entityApiUrl}/${idString}`);
     return data;
 }

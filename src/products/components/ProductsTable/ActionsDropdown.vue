@@ -3,6 +3,7 @@ import { toast } from 'vue-sonner';
 import { Button } from '@/components/ui/button'
 import { IconDots, IconCopy, IconEye, IconEdit, IconTrash } from '@tabler/icons-vue';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { copyFromBrowser } from '@/utils/browserMethods';
 
 defineProps<{
   product: {
@@ -13,9 +14,8 @@ defineProps<{
   handleDeleteProductFn: (id: number) => void,
 }>()
 
-// TODO: Extract to file and add tests
-const copy = (id: number) => {
-  navigator.clipboard.writeText(id.toString());
+const handleCopyAction = (id: number) => {
+  copyFromBrowser(id);
   toast("Product ID copied to clipboard");
 }
 </script>
@@ -30,7 +30,7 @@ const copy = (id: number) => {
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
       <DropdownMenuLabel><strong>Actions</strong></DropdownMenuLabel>
-      <DropdownMenuItem @click="copy(product.id)">
+      <DropdownMenuItem @click="handleCopyAction(product.id)">
         <IconCopy /> Copy product ID
       </DropdownMenuItem>
       <DropdownMenuSeparator />
