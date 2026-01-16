@@ -28,7 +28,6 @@ export const useProducts = ( options?: Options ) => {
     total,
     totalPages,
     searchValue,
-    categories,
     categorySelected,
   } = storeToRefs(store);
 
@@ -198,12 +197,10 @@ export const useProducts = ( options?: Options ) => {
     currentPage,
     searchValue,
     categorySelected,
-    categories,
 
     // Methods
     goToPage: store.setPage,
     setSearchValue: store.setSearchValue,
-    setCategorySelected: store.setCategorySelected,
     createProduct,
     getProductById: store.getProductById,
     updateProduct,

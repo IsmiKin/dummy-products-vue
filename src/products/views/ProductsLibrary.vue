@@ -13,6 +13,7 @@ import AlertModal from '@/components/AlertModal/AlertModal.vue'
 
 import { useProduct } from '@/products/composables/useProduct';
 import { useProducts } from '@/products/composables/useProducts';
+import { useCategories } from '@/products/composables/useCategories';
 import { computeTableColumns } from '@/products/components/ProductsTable/helpers/columns';
 import type { ProductFormData } from '@/products/interfaces';
 
@@ -32,9 +33,6 @@ const {
   isError: isErrorProducts,
   error: errorProducts,
   goToPage,
-  categories,
-  categorySelected,
-  setCategorySelected,
   searchValue,
   setSearchValue,
   createProduct,
@@ -42,6 +40,8 @@ const {
   deleteProduct,
   getProductById
 } = useProducts();
+
+const { categories, categorySelected, setCategorySelected } = useCategories();
 
 const resetStatus = () => {
   goToPage(1);
