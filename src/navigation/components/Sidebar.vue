@@ -47,9 +47,9 @@ const links = SECTION_LINKS;
       <SidebarMenuItem>
         <SidebarMenuItem>
           <SidebarMenuButton as-child class="data-[slot=sidebar-menu-button]:!p-1.5">
-            <a href="#">
+            <a :href="APP_CONFIG_SETTINGS.GITHUB_REPO_URL" target="_blank">
               <IconBrandGithub class="!size-5" />
-              <a href="https://ismikin.dev" target="_blank"> Github Repo (change link)</a>
+              <p> Github Repo</p>
             </a>
           </SidebarMenuButton>
         </SidebarMenuItem>
