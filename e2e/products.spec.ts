@@ -45,7 +45,7 @@ test.describe('Products Management', () => {
   });
 
   test('should list products', async ({ page }) => {
-    await expect(page.getByText('Products', { exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Products', exact: true })).toBeVisible();
 
     // Check if products are displayed
     await expect(page.getByText('Essence Mascara Lash Princess')).toBeVisible();
@@ -53,7 +53,7 @@ test.describe('Products Management', () => {
 
     // Check price formatting (assuming locale might vary, but "9,99" or "9.99" + currency symbol)
     // The component uses es-ES locale for formatting: 9,99 €
-    await expect(page.getByText('9,99 €')).toBeVisible();
+    await expect(page.getByText('9,99 €', { exact: true })).toBeVisible();
   });
 
   test('should create a new product', async ({ page }) => {
@@ -94,7 +94,7 @@ test.describe('Products Management', () => {
 
     // Verify toast and list update
     await expect(page.getByText('You had created a new Product')).toBeVisible();
-    await expect(page.getByText(newProduct.title)).toBeVisible();
+    await expect(page.locator('tbody').getByText(newProduct.title)).toBeVisible();
   });
 
   test('should update a product', async ({ page }) => {
@@ -104,9 +104,7 @@ test.describe('Products Management', () => {
     await page.route('*/**/products/1', async route => {
       if (route.request().method() === 'PATCH') {
         const requestData = route.request().postDataJSON();
-        if (requestData) {
-          expect(requestData.title).toBe(updatedTitle);
-        }
+        expect(requestData.title).toBe(updatedTitle);
 
         await route.fulfill({
           json: {
