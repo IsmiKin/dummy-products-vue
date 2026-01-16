@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/vue-query";
 import { watch } from "vue";
 import { toast } from "vue-sonner";
 
-import { getProducts, getCategories } from "@/products/api/helpers/getProducts";
+import { getProducts } from "@/products/api/helpers/getProducts";
 import { createProduct as createProductApi } from "@/products/api/helpers/createProduct";
 import { updateProduct as updateProductApi } from "@/products/api/helpers/updateProduct";
 import { deleteProduct as deleteProductApi } from "@/products/api/helpers/deleteProduct";
@@ -44,16 +44,6 @@ export const useProducts = ( options?: Options ) => {
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     refetchOnReconnect: true,
-    refetchInterval: 60 * 1000,
-  });
-
-  // TODO: Move into another composable
-  const { data: categoriesData } = useQuery({
-    queryKey: ['categories'],
-    queryFn: getCategories,
-    staleTime: 60 * 6000,
-    enabled: autoload,
-    retry: 0,
     refetchInterval: 60 * 1000,
   });
 
@@ -181,11 +171,6 @@ export const useProducts = ( options?: Options ) => {
     }
   }, { immediate: true });
 
-  watch(categoriesData, categories => {
-    if(categories){
-      store.setCategories(categories);
-    }
-  }, { immediate: true });
 
   return {
     // Properties

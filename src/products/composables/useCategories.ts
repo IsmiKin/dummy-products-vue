@@ -26,11 +26,11 @@ export const useCategories = ( options?: Options ) => {
     refetchInterval: 60 * 1000,
   });
 
-    watch(categoriesData, categories => {
-      if(categories){
-        store.setCategories(categories);
-      }
-    }, { immediate: true });
+  watch(categoriesData, categories => {
+    if(categories){
+      store.setCategories(categories);
+    }
+  }, { immediate: true });
 
   return {
     categories,
