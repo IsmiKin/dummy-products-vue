@@ -140,7 +140,6 @@ onMounted(() => {
       </Button>
     </div>
 
-
     <ProductsTableFilters :categories="categories" :category-selected="categorySelected" :search-value="searchValue"
       @update:search-value="handleSearchChange" @update:category-selected="handleCategoryChange" />
     <ProductsTableSkeleton v-if="isLoadingProducts" />
@@ -152,6 +151,7 @@ onMounted(() => {
       @create-product="handleCreateProduct" @update-product="handleUpdateProduct" @update:is-open="handleModalClose" />
     <AlertModal :open="isAlertModalOpen" :custom-message="alertModalMessage" :submit-fn="alertModalSubmitFn"
       @update:open="isAlertModalOpen = $event" :type-action="alertModalType" />
+
     <p v-if="isErrorProducts">
       <IconError404 />
       Error: {{ errorProducts }}
