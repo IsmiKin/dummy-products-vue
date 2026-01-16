@@ -9,6 +9,13 @@ vi.mock('@/products/api/productsApi', () => ({
   },
 }))
 
+vi.mock('@/shared/constants/appConfigSettings', () => ({
+  APP_CONFIG_SETTINGS: {
+    PRODUCTS_LIST_DEFAULT_LIMIT: 10,
+    PRODUCTS_API_BASE_URL: 'https://dummyjson.com',
+  }
+}));
+
 describe('getProducts', () => {
   beforeEach(() => {
     vi.clearAllMocks()
