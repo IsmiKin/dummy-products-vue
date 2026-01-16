@@ -8,7 +8,8 @@ defineProps<{
   product: {
     id: number,
   }
-  displayProductInfoFn: (id: number) => void
+  displayProductInfoFn: (id: number) => void,
+  handleEditProductFn: (id: number) => void,
 }>()
 
 // TODO: Extract to file and add tests
@@ -35,7 +36,7 @@ function copy(id: number) {
       <DropdownMenuItem @click="displayProductInfoFn(product.id)">
         <IconEye /> View product details
       </DropdownMenuItem>
-      <DropdownMenuItem>
+      <DropdownMenuItem @click="handleEditProductFn(product.id)">
         <IconEdit /> Edit product
       </DropdownMenuItem>
       <DropdownMenuSeparator />

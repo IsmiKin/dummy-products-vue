@@ -22,9 +22,14 @@ interface Props {
   product?: Product
 }
 
-const emit = defineEmits(['update:isOpen']);
+const emit = defineEmits(['update:isOpen', 'edit-product']);
 
 defineProps<Props>();
+
+const handleEditProduct = (id: number) => {
+  emit('update:isOpen', false);
+  emit('edit-product', id);
+}
 
 </script>
 
@@ -63,7 +68,7 @@ defineProps<Props>();
                   </div>
                 </div>
                 <div class="flex flex-col gap-2">
-                  <Button class="justify-start" variant="outline">
+                  <Button class="justify-start" variant="outline" @click="handleEditProduct(product?.id)">
                     <IconEdit />
                     Edit
                   </Button>

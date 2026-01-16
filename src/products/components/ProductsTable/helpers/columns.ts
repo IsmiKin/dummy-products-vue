@@ -9,7 +9,12 @@ import type { ProductBasic } from "@/products/interfaces";
 
 import { kebabCaseToTitleCase } from '@/utils/string';
 
-export const computeTableColumns = ({displayProductInfoFn}: {displayProductInfoFn: (id: number) => void}): ColumnDef<ProductBasic>[] => [
+interface ComputeTableColumnsProps {
+  displayProductInfoFn: (id: number) => void;
+  handleEditProductFn: (id: number) => void;
+}
+
+export const computeTableColumns = ({displayProductInfoFn, handleEditProductFn}: ComputeTableColumnsProps): ColumnDef<ProductBasic>[] => [
   {
     accessorKey: 'thumbnail',
     header: '',
@@ -70,7 +75,8 @@ export const computeTableColumns = ({displayProductInfoFn}: {displayProductInfoF
 
     return h('div', { class: 'relative' }, h(DropdownAction, {
       product,
-      displayProductInfoFn
+      displayProductInfoFn,
+      handleEditProductFn
     }))
   },
   },

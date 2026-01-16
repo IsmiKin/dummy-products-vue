@@ -1,6 +1,6 @@
 import type { Product } from "./product";
 
-type REQUIRED_PRODUCTS_FIELDS = 'id' | 'title' | 'price' | 'description' | 'category' | 'thumbnail';
+type REQUIRED_PRODUCTS_FIELDS = 'id' | 'title' | 'price' | 'category' | 'thumbnail';
 
 export type ProductBasic = Pick<Product, REQUIRED_PRODUCTS_FIELDS>;
 

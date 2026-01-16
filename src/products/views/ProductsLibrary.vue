@@ -21,7 +21,7 @@ const productId = ref<string | number>('');
 
 const { data: currentProduct } = useProduct(productId);
 
-const { products, isLoading: isLoadingProducts, isError: isErrorProducts, error: errorProducts, goToPage, categories, categorySelected, setCategorySelected, searchValue, setSearchValue, createProduct } = useProducts();
+const { products, isLoading: isLoadingProducts, isError: isErrorProducts, error: errorProducts, goToPage, categories, categorySelected, setCategorySelected, searchValue, setSearchValue, createProduct, updateProduct } = useProducts();
 
 const resetStatus = () => {
   goToPage(1);
@@ -48,22 +48,49 @@ const displayProductInfo = (id: number) => {
   productId.value = id;
 }
 
-const handleCreateProduct = (formData: ProductFormData) => {
+const handleEditProduct = (id: number) => {
+  isProductModalOpen.value = true;
+  productId.value = id;
+}
+
+const handleCreateProduct = async (formData: ProductFormData) => {
   // Transform form data to ProductBasic format
   const product = {
-    id: Date.now(), // Generate a temporary ID
     title: formData.title,
     price: formData.price,
     description: formData.description || '',
     category: formData.category,
-    thumbnail: '',
+    thumbnail: formData.thumbnail || 'https://placehold.co/400x300?text=No+Image',
   };
 
-  createProduct(product);
+  await createProduct(product);
+}
+
+const handleUpdateProduct = (formData: ProductFormData & { id: number }) => {
+  // Transform form data to ProductBasic format
+  const product = {
+    id: formData.id,
+    title: formData.title,
+    price: formData.price,
+    description: formData.description || '',
+    category: formData.category,
+    thumbnail: currentProduct.value?.thumbnail || '',
+  };
+
+  updateProduct(product);
+}
+
+const handleModalClose = (isOpen: boolean) => {
+  isProductModalOpen.value = isOpen;
+  if (!isOpen) {
+    // Reset productId when modal closes to prevent showing old data
+    productId.value = '';
+  }
 }
 
 const columns = computeTableColumns({
-  displayProductInfoFn: displayProductInfo
+  displayProductInfoFn: displayProductInfo,
+  handleEditProductFn: handleEditProduct,
 });
 
 onMounted(() => {
@@ -88,9 +115,9 @@ onMounted(() => {
     <ProductsTable v-else :columns="columns" :data="products" />
 
     <ProductsInfoSheet :product="currentProduct" :is-open="isProductInfoOpen"
-      @update:is-open="isProductInfoOpen = $event" />
-    <ProductModal :is-open="isProductModalOpen" :categories="categories" @create-product="handleCreateProduct"
-      @update:is-open="isProductModalOpen = $event" />
+      @update:is-open="isProductInfoOpen = $event" @edit-product="handleEditProduct" />
+    <ProductModal :is-open="isProductModalOpen" :categories="categories" :product="currentProduct"
+      @create-product="handleCreateProduct" @update-product="handleUpdateProduct" @update:is-open="handleModalClose" />
 
     <p v-if="isErrorProducts">
       <IconError404 />

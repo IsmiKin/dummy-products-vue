@@ -56,6 +56,18 @@ export const useProductsStore = defineStore('products', () => {
         addProduct(product: ProductBasic) {
           products.value = [product, ...products.value];
           total.value++;
+        },
+        getProductById(id: number) {
+          return products.value.find((product) => product.id === id);
+        },
+        updateProduct(productId: number, product: ProductBasic) {
+          const productIndex = products.value.findIndex((p) => p.id === productId);
+          if (productIndex === -1) return;
+          products.value[productIndex] = product;
+        },
+        removeProduct(productId: number) {
+          products.value = products.value.filter((p) => p.id !== productId);
+          total.value--;
         }
 
     }

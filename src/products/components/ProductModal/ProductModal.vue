@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod'
 import { Form, Field as VeeField } from 'vee-validate'
-import { h } from 'vue'
+import { h, computed } from 'vue'
 
 import { toast } from 'vue-sonner'
 import * as z from 'zod'
 
 import type { ProductsCategories } from '@/products/interfaces/products-categories-response'
-import type { ProductFormData } from '@/products/interfaces'
+import type { Product, ProductFormData } from '@/products/interfaces'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -37,42 +37,61 @@ import {
 interface ProductModalProps {
   isOpen: boolean;
   categories: ProductsCategories;
+  product?: Product;
 }
 
 const emit = defineEmits<{
   'update:is-open': [value: boolean]
   'create-product': [product: ProductFormData]
+  'update-product': [product: ProductFormData & { id: number }]
 }>()
-defineProps<ProductModalProps>();
+
+const props = defineProps<ProductModalProps>();
 
 const productSchema = z.object({
   title: z.string().min(2, 'Title must be at least 2 characters').max(50),
-  description: z.string().max(50).optional().or(z.literal('')),
+  description: z.string().max(200).optional().or(z.literal('')),
   category: z.string().min(2, 'Category is required').max(50),
   brand: z.string().max(50).optional().or(z.literal('')),
-  price: z.number({ required_error: 'Price is required', invalid_type_error: 'Price must be a number' }).min(0, 'Price must be positive'),
+  price: z.number().refine(
+    val => Number.isFinite(val) && /^\d+\.\d{2}$/.test(val.toFixed(2)),
+    { message: "Must have exactly 2 decimal places" }
+  ),
   stock: z.number().min(0).optional().or(z.nan()),
   discount: z.number().min(0).max(100).optional().or(z.nan()),
 })
 
 const formSchema = toTypedSchema(productSchema)
 
-const initialValues = {
-  title: '',
-  description: '',
-  category: '',
-  brand: '',
-  price: 0,
-  stock: 0,
-  discount: 0,
-}
+const initialValues = computed(() => ({
+  title: props.product?.title || '',
+  description: props.product?.description || '',
+  category: props.product?.category || '',
+  brand: props.product?.brand || '',
+  price: props.product?.price || 0,
+  stock: props.product?.stock || 0,
+  discount: props.product?.discountPercentage || 0,
+}))
+
+const isEditMode = computed(() => !!props.product?.id)
 
 const onSubmit = (values: Record<string, unknown>) => {
   const validatedValues = values as z.infer<typeof productSchema>
-  emit('create-product', validatedValues)
-  toast('You had created a new Product', {
-    description: h('pre', { class: 'mt-2 w-[320px] rounded-md bg-neutral-950 p-4' }, h('code', { class: 'text-white' }, JSON.stringify(validatedValues, null, 2))),
-  })
+
+  if (isEditMode.value && props.product?.id) {
+    // Ensure ID is a number, not a string
+    const productId = Number(props.product.id);
+    emit('update-product', { ...validatedValues, id: productId })
+    toast('Product updated successfully', {
+      description: h('pre', { class: 'mt-2 w-[320px] rounded-md bg-neutral-950 p-4' }, h('code', { class: 'text-white' }, JSON.stringify(validatedValues, null, 2))),
+    })
+  } else {
+    emit('create-product', validatedValues)
+    toast('You had created a new Product', {
+      description: h('pre', { class: 'mt-2 w-[320px] rounded-md bg-neutral-950 p-4' }, h('code', { class: 'text-white' }, JSON.stringify(validatedValues, null, 2))),
+    })
+  }
+
   emit('update:is-open', false)
 }
 </script>
@@ -81,13 +100,14 @@ const onSubmit = (values: Record<string, unknown>) => {
   <Dialog :open="isOpen" @update:open="emit('update:is-open', $event)">
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle>Create a new Product</DialogTitle>
+        <DialogTitle>{{ isEditMode ? 'Edit Product' : 'Create a new Product' }}</DialogTitle>
         <DialogDescription>
-          Add a new product to your inventory.
+          {{ isEditMode ? 'Update the product information.' : 'Add a new product to your inventory.' }}
         </DialogDescription>
       </DialogHeader>
 
-      <Form v-slot="{ handleSubmit }" as="" keep-values :validation-schema="formSchema" :initial-values="initialValues">
+      <Form v-slot="{ handleSubmit }" as="" :key="props.product?.id || 'new'" :validation-schema="formSchema"
+        :initial-values="initialValues">
         <form id="dialogForm" class="space-y-6" @submit="handleSubmit($event, onSubmit)">
           <FieldGroup>
             <VeeField v-slot="{ componentField, errors }" name="title">
@@ -152,7 +172,8 @@ const onSubmit = (values: Record<string, unknown>) => {
                   <FieldLabel for="price">
                     Price <span class="text-destructive">*</span>
                   </FieldLabel>
-                  <Input id="price" type="number" placeholder="Enter product price" v-bind="componentField" />
+                  <Input id="price" type="number" step=".01" placeholder="Enter product price"
+                    v-bind="componentField" />
                   <FieldError v-if="errors.length" :errors="errors" />
                 </Field>
               </VeeField>
@@ -176,7 +197,8 @@ const onSubmit = (values: Record<string, unknown>) => {
                   <FieldLabel for="discount">
                     Discount
                   </FieldLabel>
-                  <Input id="discount" type="number" placeholder="Enter product discount" v-bind="componentField" />
+                  <Input id="discount" step=".01" type="number" placeholder="Enter product discount"
+                    v-bind="componentField" />
                   <FieldError v-if="errors.length" :errors="errors" />
                 </Field>
               </VeeField>
@@ -187,7 +209,7 @@ const onSubmit = (values: Record<string, unknown>) => {
 
       <DialogFooter>
         <Button type="submit" form="dialogForm">
-          Save changes
+          {{ isEditMode ? 'Update Product' : 'Create Product' }}
         </Button>
       </DialogFooter>
     </DialogContent>

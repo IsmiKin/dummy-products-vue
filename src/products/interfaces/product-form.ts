@@ -6,4 +6,5 @@ export interface ProductFormData {
   price: number;
   stock?: number;
   discount?: number;
+  thumbnail?: string;
 }
