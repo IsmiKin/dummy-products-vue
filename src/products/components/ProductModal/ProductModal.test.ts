@@ -123,7 +123,7 @@ describe('ProductModal', () => {
     await new Promise(resolve => setTimeout(resolve, 100));
 
     expect(wrapper.emitted('create-product')).toBeTruthy();
-    const emittedData = wrapper.emitted('create-product')?.[0][0] as any;
+    const emittedData = wrapper.emitted('create-product')?.[0][0] as Record<string, unknown>;
     expect(emittedData.title).toBe('New Product');
     expect(emittedData.price).toBe(99.99);
   });

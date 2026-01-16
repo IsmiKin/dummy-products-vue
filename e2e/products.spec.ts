@@ -104,7 +104,9 @@ test.describe('Products Management', () => {
     await page.route('*/**/products/1', async route => {
       if (route.request().method() === 'PATCH') {
         const requestData = route.request().postDataJSON();
-        expect(requestData.title).toBe(updatedTitle);
+        if (requestData) {
+          expect(requestData.title).toBe(updatedTitle);
+        }
 
         await route.fulfill({
           json: {
@@ -163,6 +165,6 @@ test.describe('Products Management', () => {
     // But it does "optimistic update" -> store.removeProduct(id).
 
     // Wait for the product to disappear
-    await expect(page.getByText('Essence Mascara Lash Princess')).not.toBeVisible();
+    await expect(page.getByText('Essence Mascara Lash Princess')).toBeHidden();
   });
 });

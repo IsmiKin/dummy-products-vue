@@ -30,7 +30,7 @@ describe('TablePagination', () => {
     const table = createMockTable();
     const wrapper = mount(TablePagination, {
       props: {
-        table: table as any,
+        table,
       },
     });
 
@@ -42,7 +42,7 @@ describe('TablePagination', () => {
     const table = createMockTable(0);
     const wrapper = mount(TablePagination, {
       props: {
-        table: table as any,
+        table,
       },
     });
 
@@ -58,7 +58,7 @@ describe('TablePagination', () => {
     const table = createMockTable(4);
     const wrapper = mount(TablePagination, {
       props: {
-        table: table as any,
+        table,
       },
     });
 
@@ -73,7 +73,7 @@ describe('TablePagination', () => {
     const table = createMockTable(2);
     const wrapper = mount(TablePagination, {
       props: {
-        table: table as any,
+        table,
       },
     });
 

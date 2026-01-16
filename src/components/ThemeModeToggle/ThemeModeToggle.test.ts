@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import ThemeModeToggle from './ThemeModeToggle.vue';
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 
 // Mock UI components
 vi.mock('@/components/ui/button', () => ({

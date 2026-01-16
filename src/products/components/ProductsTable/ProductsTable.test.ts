@@ -1,7 +1,9 @@
 import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import ProductsTable from './ProductsTable.vue';
-import { mockProductBasic, mockProductsList } from '@/products/mocks/products';
+import { mockProductsList } from '@/products/mocks/products';
+import type { ColumnDef, CellContext } from '@tanstack/vue-table';
+import type { Product } from '@/products/interfaces/product';
 
 // Mock Composables
 vi.mock('@/products/composables/useProduct', () => ({
@@ -47,27 +49,27 @@ vi.mock('@tanstack/vue-table', async (importOriginal) => {
 
 // Mock pagination component
 vi.mock('@/components/TablePagination/TablePagination.vue', () => ({
-  default: { template: '<div class="pagination"></div>' }
+  default: { template: '<div class=\"pagination\"></div>' }
 }));
 
 describe('ProductsTable', () => {
-  const columns = [
+  const columns: ColumnDef<Product, unknown>[] = [
     {
       accessorKey: 'title',
       header: 'Title',
-      cell: (info: any) => info.getValue(),
+      cell: (info: CellContext<Product, unknown>) => info.getValue(),
     },
     {
         accessorKey: 'price',
         header: 'Price',
-        cell: (info: any) => info.getValue(),
+        cell: (info: CellContext<Product, unknown>) => info.getValue(),
     }
   ];
 
   it('should render table with data', () => {
     const wrapper = mount(ProductsTable, {
       props: {
-        columns: columns as any,
+        columns: columns,
         data: mockProductsList,
       },
     });
@@ -93,7 +95,7 @@ describe('ProductsTable', () => {
   it('should render no results when data is empty', () => {
     const wrapper = mount(ProductsTable, {
       props: {
-        columns: columns as any,
+        columns: columns,
         data: [],
       },
     });

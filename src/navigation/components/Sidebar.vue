@@ -27,7 +27,6 @@ const links = SECTION_LINKS;
 </script>
 
 <template>
-  <!-- TODO: Move magic strings to env vars -->
   <Sidebar collapsible="offcanvas">
     <SidebarHeader>
       <SidebarMenu>

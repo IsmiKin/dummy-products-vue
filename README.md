@@ -79,3 +79,37 @@ npx playwright install
 # Run tests
 yarn test:e2e
 ```
+
+### Linting
+Run linting to check for code style issues:
+```sh
+yarn lint
+```
+
+## 📚 Documentation
+// TODO: Update links
+- [About](https://dummy-products-vue.vercel.app/about)
+- [Tech Stack](https://dummy-products-vue.vercel.app/tech-stack)
+
+## :bulb: Key technical decisions and trade-offs.
+* In order to prepare the data and have the more smooth UX experience, the composables includes some logic to prepare the following page or the possible visited product using the "prefetchQuery" from TanStack Query.
+* Use of different components to don't over use modals and to have a better UX experience.
+* Use properly the scopes of the components by domain
+* Use of Zod and VeeValidate for proper validation in data fetching and form validation
+
+
+## :construction: Limitations
+
+* Dummy JSON doesn't allow to filter by category on the main endpoint and neither accepts more search params in the category one, what makes the code a bit more complex and not as clean as it could be. For the sake of the exercise, I had only allow to filter by category or by search separately.
+
+## :book: Pending Improvements
+* Use of IndexedDB to store the products and categories data in order to have some initial data when app is loaded.
+* Use of the query params in order to save the "status" of the filters and the search and allow share links with other users.
+* More tests specially on the E2E part, for the fails scenarios as lone as only the happy path had been covered.
+* More features such as sorting
+* Have more stores to separate the logic
+* Split the composables in smaller ones in order to have a better code organization
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
