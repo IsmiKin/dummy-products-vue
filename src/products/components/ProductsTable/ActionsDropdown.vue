@@ -10,10 +10,11 @@ defineProps<{
   }
   displayProductInfoFn: (id: number) => void,
   handleEditProductFn: (id: number) => void,
+  handleDeleteProductFn: (id: number) => void,
 }>()
 
 // TODO: Extract to file and add tests
-function copy(id: number) {
+const copy = (id: number) => {
   navigator.clipboard.writeText(id.toString());
   toast("Product ID copied to clipboard");
 }
@@ -40,7 +41,7 @@ function copy(id: number) {
         <IconEdit /> Edit product
       </DropdownMenuItem>
       <DropdownMenuSeparator />
-      <DropdownMenuItem>
+      <DropdownMenuItem @click="handleDeleteProductFn(product.id)">
         <IconTrash /> Delete product
       </DropdownMenuItem>
     </DropdownMenuContent>

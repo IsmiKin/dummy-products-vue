@@ -6,6 +6,7 @@ import { toast } from "vue-sonner";
 import { getProducts, getCategories } from "@/products/api/helpers/getProducts";
 import { createProduct as createProductApi } from "@/products/api/helpers/createProduct";
 import { updateProduct as updateProductApi } from "@/products/api/helpers/updateProduct";
+import { deleteProduct as deleteProductApi } from "@/products/api/helpers/deleteProduct";
 import { useProductsStore } from "@/stores/products";
 
 import { APP_CONFIG_SETTINGS } from '@/shared/constants/appConfigSettings';
@@ -138,6 +139,38 @@ export const useProducts = ( options?: Options ) => {
 
   }
 
+  const deleteProduct = async(id: number) => {
+    // NOTE: This is an "optimistic update", it requires a rollback strategy    
+    let deletedProduct: ProductBasic;
+    
+    // Store original product for rollback, but don't include it in the API payload
+    const originalProduct = store.getProductById(id);    
+    
+    // Update store optimistically
+    store.removeProduct(id);
+    
+    try {      
+      deletedProduct = await deleteProductApi(id);      
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'An error occurred while deleting the product',
+        variant: 'destructive',
+      })
+      
+      // Only rollback if we have the original product
+      if (originalProduct) {
+        store.addProduct(originalProduct);
+      }
+      
+      console.error(error);
+      throw error;
+    }
+
+    return deletedProduct;
+
+  }
+
   watch(data, products => {
     if(products){
       store.setProducts(products.products);
@@ -173,7 +206,8 @@ export const useProducts = ( options?: Options ) => {
     setCategorySelected: store.setCategorySelected,
     createProduct,
     getProductById: store.getProductById,
-    updateProduct
+    updateProduct,
+    deleteProduct,
 
     // Computed
   }
